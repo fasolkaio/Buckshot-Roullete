@@ -1,17 +1,19 @@
 package sk.tuke.kpi.kp.ak.gamelib.core.players;
 
 import lombok.Getter;
+import sk.tuke.kpi.kp.ak.gamelib.core.Game;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.Item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Getter
 public abstract class Player {
     private int lifeCount;
     private final int maxLifeCount;
     private final String name;
-    private boolean scipTurn;
+    private boolean skipTurn;
     private final List<Item> items;
     private final int itemsCapacity;
 
@@ -19,7 +21,7 @@ public abstract class Player {
         this.name = name;
         this.maxLifeCount = maxLifeCount;
         lifeCount = maxLifeCount;
-        scipTurn = false;
+        skipTurn = false;
         itemsCapacity = 8;
         items = new ArrayList<>();
     }
@@ -50,11 +52,25 @@ public abstract class Player {
     }
 
     //TODO
-    public <I extends Item> boolean useItem(Class<I> itemClass) {
-        items.stream().filter(item -> item.getClass().equals(itemClass)).findFirst().ifPresent(item -> {
-            //TODO item.use
-            items.remove(item);
-        });
-        return false;
+    public <I extends Item> boolean useItem(Class<I> itemClass, Game game) {
+        AtomicBoolean result = new AtomicBoolean(false);
+        items.stream()
+                .filter(item -> item.getClass()
+                .equals(itemClass))
+                .findFirst().
+                ifPresent(item ->
+                {
+                    result.set(item.useItem(game));
+                    items.remove(item);
+                });
+        return result.get();
+    }
+
+    public boolean skipTurn(){
+        if(skipTurn){
+            return false;
+        }
+        skipTurn = true;
+        return true;
     }
 }

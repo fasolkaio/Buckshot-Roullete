@@ -54,8 +54,11 @@ public class Gun {
         return isLive;
     }
 
-    public void doubleDamage(){
+    public boolean doubleDamage(){
+        if(damage != 1)
+            return false;
         setDamage(getDamage()*2);
+        return true;
     }
 
     public void normalDamage(){
