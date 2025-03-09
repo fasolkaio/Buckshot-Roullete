@@ -3,6 +3,7 @@ package sk.tuke.kpi.kp.ak.gamelib.core.weapon;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
 import sk.tuke.kpi.kp.ak.gamelib.core.utilities.RandomGenerator;
 
 import java.util.ArrayList;
@@ -59,5 +60,13 @@ public class Gun {
 
     public void normalDamage(){
         setDamage(1);
+    }
+
+    public boolean shoot(Player player){
+        if (removeBullet()){
+            player.makeDamage(damage);
+            return true;
+        }
+        return false;
     }
 }
