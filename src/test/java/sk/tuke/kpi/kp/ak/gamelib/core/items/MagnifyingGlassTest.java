@@ -17,8 +17,11 @@ public class MagnifyingGlassTest {
         Game game = new Game("first player", "second player");
         Item glass = new MagnifyingGlass();
         boolean isLive = !game.getGun().getBullets().get(0).isBlank();
-        boolean result = glass.useItem(game);
-        assertEquals(result, isLive);
+        ItemUseResult result = glass.useItem(game);
+        if(isLive)
+            assertEquals(ItemUseResult.BULLET_WAS_LIVE, result);
+        else
+            assertEquals(ItemUseResult.BULLET_WAS_BLANK, result);
     }
     @Test
     public void testUseWithEmptyGun() {
@@ -27,6 +30,6 @@ public class MagnifyingGlassTest {
         while (!game.getGun().isEmpty()) {
             game.getGun().removeBullet();
         }
-        assertThrows(UnsupportedOperationException.class, () -> glass.useItem(game));
+        assertEquals(ItemUseResult.USE_ITEM_FAILED, glass.useItem(game));
     }
 }

@@ -5,12 +5,15 @@ import sk.tuke.kpi.kp.ak.gamelib.core.weapon.Gun;
 
 public class MagnifyingGlass implements Item {
     @Override
-    public boolean useItem(Game game) {
+    public ItemUseResult useItem(Game game) {
         if(game == null)
             throw new UnsupportedOperationException("Unsupported operation. Game not exist");
         Gun gun = game.getGun();
         if (gun.isEmpty())
-            throw new UnsupportedOperationException("Unsupported operation. Gun is empty");
-        return gun.checkBullet();
+            return ItemUseResult.USE_ITEM_FAILED;
+        if(gun.checkBullet())
+            return ItemUseResult.BULLET_WAS_LIVE;
+        else
+            return ItemUseResult.BULLET_WAS_BLANK;
     }
 }

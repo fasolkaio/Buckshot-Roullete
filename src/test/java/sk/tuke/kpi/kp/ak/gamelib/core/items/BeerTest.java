@@ -17,8 +17,8 @@ public class BeerTest {
         Item beer = new Beer();
         int bulletCountBefore = game.getGun().getBulletsCount();
         int liveBulletCountBefore = game.getGun().getLiveBulletsCount();
-        boolean result = beer.useItem(game);
-        if (result)
+        ItemUseResult result = beer.useItem(game);
+        if (result == ItemUseResult.BULLET_WAS_LIVE)
                 assertEquals(liveBulletCountBefore - 1, game.getGun().getLiveBulletsCount());
         assertEquals(bulletCountBefore - 1, game.getGun().getBulletsCount());
     }
@@ -29,6 +29,6 @@ public class BeerTest {
         while (!game.getGun().isEmpty()) {
             game.getGun().removeBullet();
         }
-        assertThrows(UnsupportedOperationException.class, () -> beer.useItem(game));
+        assertEquals(ItemUseResult.USE_ITEM_FAILED, beer.useItem(game));
     }
 }

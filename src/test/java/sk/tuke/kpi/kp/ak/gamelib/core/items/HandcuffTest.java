@@ -18,13 +18,13 @@ public class HandcuffTest {
         Item handcuff = new Handcuff();
         Player notActual = game.getActualPlayer();
         boolean before = notActual.scipTurn();
-        boolean result = handcuff.useItem(game);
+        ItemUseResult result = handcuff.useItem(game);
         if(!before) {
-            assertTrue(result);
+            assertEquals(ItemUseResult.USE_ITEM_SUCCESS, result);
             assertTrue(game.getActualPlayer().scipTurn());
         }
         else {
-            assertFalse(result);
+            assertEquals(ItemUseResult.USE_ITEM_FAILED, result);
             assertTrue(game.getActualPlayer().scipTurn());
         }
     }

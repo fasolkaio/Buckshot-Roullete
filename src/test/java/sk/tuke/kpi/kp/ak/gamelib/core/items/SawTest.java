@@ -16,8 +16,8 @@ public class SawTest {
         Game game = new Game("first player", "second player");
         Item saw = new Saw();
         int damageBefore = game.getGun().getDamage();
-        boolean result = saw.useItem(game);
-        if(result)
+        ItemUseResult result = saw.useItem(game);
+        if(result == ItemUseResult.USE_ITEM_SUCCESS)
             assertEquals(damageBefore * 2, game.getGun().getDamage());
         else
             assertEquals(damageBefore, game.getGun().getDamage());

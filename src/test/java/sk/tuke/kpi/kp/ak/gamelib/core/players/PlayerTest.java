@@ -27,5 +27,9 @@ public class PlayerTest {
         assertEquals(player.getLifeCount(), 5);
     }
 
-    //TODO add item test
+    @Test
+    public void testUseItem() {
+        Player player = new Human("player", 5);
+
+    }
 }

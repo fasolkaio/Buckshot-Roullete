@@ -19,8 +19,8 @@ public class CigarettesTest {
         Player actual = game.getActualPlayer();
         actual.makeDamage(1);
         int lives = actual.getLifeCount();
-        boolean result = cigarettes.useItem(game);
-        assertTrue(result);
+        ItemUseResult result = cigarettes.useItem(game);
+        assertEquals(ItemUseResult.USE_ITEM_SUCCESS, result);
         assertEquals(lives + 1, actual.getLifeCount());
     }
     @Test
@@ -29,8 +29,8 @@ public class CigarettesTest {
         Item cigarettes = new Cigarettes();
         Player actual = game.getActualPlayer();
         int lives = actual.getLifeCount();
-        boolean result = cigarettes.useItem(game);
-        assertFalse(result);
+        ItemUseResult result = cigarettes.useItem(game);
+        assertEquals(ItemUseResult.USE_ITEM_FAILED, result);
         assertEquals(lives, actual.getLifeCount());
     }
 }

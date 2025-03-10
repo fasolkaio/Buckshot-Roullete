@@ -3,10 +3,11 @@ package sk.tuke.kpi.kp.ak.gamelib.core.players;
 import lombok.Getter;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.Item;
+import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Getter
 public abstract class Player {
@@ -52,18 +53,18 @@ public abstract class Player {
     }
 
     //TODO
-    public <I extends Item> boolean useItem(Class<I> itemClass, Game game) {
-        AtomicBoolean result = new AtomicBoolean(false);
-        items.stream()
+    public <I extends Item> ItemUseResult useItem(Class<I> itemClass, Game game) {
+        Item firstItem = items.stream()
                 .filter(item -> item.getClass()
                 .equals(itemClass))
-                .findFirst().
-                ifPresent(item ->
-                {
-                    result.set(item.useItem(game));
-                    items.remove(item);
-                });
-        return result.get();
+                .findFirst().orElse(null);
+        ItemUseResult result = ItemUseResult.USE_ITEM_FAILED;
+        if(firstItem != null){
+            result = firstItem.useItem(game);
+            items.remove(firstItem);
+        }
+
+        return result;
     }
 
     public boolean scipTurn(){
