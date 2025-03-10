@@ -7,7 +7,7 @@ public class Cigarettes implements Item {
     @Override
     public boolean useItem(Game game) {
         if(game == null)
-            return false;
+            throw new UnsupportedOperationException("Unsupported operation. Game not exist");
         return game.getActualPlayer().heal();
     }
 }

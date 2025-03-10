@@ -66,7 +66,11 @@ public abstract class Player {
         return result.get();
     }
 
-    public boolean skipTurn(){
+    public boolean scipTurn(){
+        return skipTurn;
+    }
+
+    public boolean makeSkipTurn(){
         if(skipTurn){
             return false;
         }

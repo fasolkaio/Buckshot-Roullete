@@ -11,8 +11,8 @@ import java.util.List;
 
 @Getter
 public class Gun {
-    private final int liveBulletsCount;
-    private final int bulletsCount;
+    private int liveBulletsCount;
+    private int bulletsCount;
     private final List<Bullet> bullets;
     @Setter(AccessLevel.PRIVATE)
     private int damage;
@@ -51,6 +51,9 @@ public class Gun {
     public boolean removeBullet(){
         boolean isLive = checkBullet();
         bullets.remove(0);
+        bulletsCount--;
+        if(isLive)
+            liveBulletsCount--;
         return isLive;
     }
 
@@ -71,5 +74,9 @@ public class Gun {
             return true;
         }
         return false;
+    }
+
+    public boolean isEmpty(){
+        return bullets.isEmpty();
     }
 }

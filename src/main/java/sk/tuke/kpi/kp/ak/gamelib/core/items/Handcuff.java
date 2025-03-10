@@ -6,7 +6,7 @@ public class Handcuff implements Item{
     @Override
     public boolean useItem(Game game) {
         if(game == null)
-            return false;
-        return game.getActualPlayer().skipTurn();
+            throw new UnsupportedOperationException("Unsupported operation. Game not exist");
+        return game.getActualPlayer().makeSkipTurn();
     }
 }

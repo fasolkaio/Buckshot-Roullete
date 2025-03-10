@@ -34,8 +34,14 @@ public class GunTest {
     public void testRemoveBullet(){
         Gun gun = new Gun();
         int sizeBefore = gun.getBullets().size();
-        gun.removeBullet();
+        int bulletsCountBerfore = gun.getBulletsCount();
+        int liveBulletsCountBefore = gun.getLiveBulletsCount();
+        boolean result = gun.removeBullet();
         assertEquals(sizeBefore - 1, gun.getBullets().size());
+        assertEquals(bulletsCountBerfore - 1, gun.getBulletsCount());
+        if(result)
+            assertEquals(liveBulletsCountBefore - 1, gun.getLiveBulletsCount());
+
     }
 
     @Test

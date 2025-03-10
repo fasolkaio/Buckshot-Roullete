@@ -7,9 +7,9 @@ public class MagnifyingGlass implements Item {
     @Override
     public boolean useItem(Game game) {
         if(game == null)
-            return false;
+            throw new UnsupportedOperationException("Unsupported operation. Game not exist");
         Gun gun = game.getGun();
-        if (gun.getBullets().isEmpty())
+        if (gun.isEmpty())
             throw new UnsupportedOperationException("Unsupported operation. Gun is empty");
         return gun.checkBullet();
     }
