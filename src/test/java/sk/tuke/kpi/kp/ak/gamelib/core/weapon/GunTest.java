@@ -58,4 +58,9 @@ public class GunTest {
         Gun gun = new Gun();
         assertEquals(!gun.getBullets().get(0).isBlank(), gun.checkBullet());
     }
+
+    @Test
+    public void tetShoot(){
+        //TODO
+    }
 }

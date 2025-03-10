@@ -22,6 +22,30 @@ public class Game {
         secondPlayer = new Human(secondPlayerName, playersLifeCount);
     }
 
+    public void startGame(){
+        //TODO
+    }
+
+    private void initRound(){
+        //TODO
+    }
+
+    public void playTurn(){
+        //TODO
+    }
+
+    public boolean isGameOver(){
+        //TODO
+        return false;
+    }
+
+    public Player getWinner(){
+        if(firstPlayer.getLifeCount() == 0)
+            return secondPlayer;
+        else
+            return firstPlayer;
+    }
+
     public Player getActualPlayer() {
         if (gameState == GameState.FIRST_PLAYER_TURN)
             return firstPlayer;
@@ -35,4 +59,5 @@ public class Game {
         else
             return secondPlayer;
     }
+
 }

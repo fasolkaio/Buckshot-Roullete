@@ -52,7 +52,6 @@ public abstract class Player {
         return false;
     }
 
-    //TODO
     public <I extends Item> ItemUseResult useItem(Class<I> itemClass, Game game) {
         Item firstItem = items.stream()
                 .filter(item -> item.getClass()
