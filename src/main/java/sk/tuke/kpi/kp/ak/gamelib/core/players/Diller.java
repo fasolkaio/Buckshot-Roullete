@@ -11,6 +11,6 @@ public class Diller extends Player {
     @Override
     public ActionResult doTurn(Action action) {
         //TODO
-
+        return null;
     }
 }

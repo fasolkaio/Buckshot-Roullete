@@ -1,6 +1,10 @@
 package sk.tuke.kpi.kp.ak.gamelib.core.weapon;
 
 import org.testng.annotations.Test;
+import sk.tuke.kpi.kp.ak.gamelib.core.Game;
+import sk.tuke.kpi.kp.ak.gamelib.core.players.Human;
+import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GunTest {
@@ -50,7 +54,7 @@ public class GunTest {
         while (!gun.getBullets().isEmpty()){
             gun.getBullets().remove(0);
         }
-        assertThrows(NullPointerException.class, gun::checkBullet);
+        assertThrows(UnsupportedOperationException.class, gun::checkBullet);
     }
 
     @Test
@@ -60,7 +64,24 @@ public class GunTest {
     }
 
     @Test
-    public void tetShoot(){
-        //TODO
+    public void tetShootNull(){
+        Gun gun = new Gun();
+        assertThrows(NullPointerException.class, () -> gun.shoot(null));
     }
+
+    @Test
+    public void testShoot(){
+        Gun gun = new Gun();
+        int bulletsBefore = gun.getBulletsCount();
+        boolean iLive = gun.checkBullet();
+        Player player = new Human("player", 5);
+        boolean result = gun.shoot(player);
+        assertEquals(bulletsBefore - 1, gun.getBulletsCount());
+        assertEquals(iLive, result);
+        if(result)
+            assertEquals(4, player.getLifeCount());
+        else
+            assertEquals(5, player.getLifeCount());
+    }
+
 }

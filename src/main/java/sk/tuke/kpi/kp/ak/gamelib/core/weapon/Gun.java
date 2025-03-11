@@ -42,7 +42,7 @@ public class Gun {
     // return true if next bullet is life
     public boolean checkBullet(){
         if(bullets.isEmpty()){
-            throw new NullPointerException("bullets is empty");
+            throw new UnsupportedOperationException("no bullets");
         }
 
         return !bullets.get(0).isBlank();
@@ -64,11 +64,13 @@ public class Gun {
         return true;
     }
 
-    public void normalDamage(){
+    public void normalizeDamage(){
         setDamage(1);
     }
 
     public boolean shoot(Player player){
+        if(player == null)
+            throw new NullPointerException("player is null");
         if (removeBullet()){
             player.makeDamage(damage);
             return true;
