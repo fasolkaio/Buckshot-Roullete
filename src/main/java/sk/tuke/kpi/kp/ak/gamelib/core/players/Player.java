@@ -5,8 +5,11 @@ import sk.tuke.kpi.kp.ak.gamelib.core.Game;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.Item;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
+import sk.tuke.kpi.kp.ak.gamelib.core.observers.GameObserver;
+import sk.tuke.kpi.kp.ak.gamelib.core.observers.HealthObserver;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Getter
@@ -17,6 +20,7 @@ public abstract class Player {
     private boolean skipTurn;
     private final List<Item> items;
     private final int itemsCapacity;
+    private final HashSet<GameObserver> observers;
 
     public Player(String name, int maxLifeCount) {
         this.name = name;
@@ -25,6 +29,7 @@ public abstract class Player {
         skipTurn = false;
         itemsCapacity = 8;
         items = new ArrayList<>();
+        observers = new HashSet<>();
     }
 
     public abstract ActionResult doTurn(Action action);
@@ -41,7 +46,12 @@ public abstract class Player {
         lifeCount -= damage;
         if(lifeCount < 0)
             lifeCount = 0;
-        //TODO obeserver for death
+        if (lifeCount == 0)
+            observers.stream().filter(o -> o instanceof HealthObserver).forEach(GameObserver::notifyGame);
+    }
+
+    public  void addObserver(GameObserver observer){
+        observers.add(observer);
     }
 
     public boolean addItem(Item item){

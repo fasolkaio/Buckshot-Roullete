@@ -40,4 +40,11 @@ public class GameTest {
         assertTrue(game.reloadGun());
         assertFalse(game.getGun().isEmpty());
     }
+
+    @Test
+    public void testRoundOver(){
+        Game game = new Game("first", "second");
+        game.getActualPlayer().makeDamage(10);
+        assertEquals(GameState.ENDED, game.getGameState());
+    }
 }

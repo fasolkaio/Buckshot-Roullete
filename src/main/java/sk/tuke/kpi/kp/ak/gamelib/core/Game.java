@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
+import sk.tuke.kpi.kp.ak.gamelib.core.observers.GameObserver;
+import sk.tuke.kpi.kp.ak.gamelib.core.observers.HealthObserver;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Human;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
 import sk.tuke.kpi.kp.ak.gamelib.core.utilities.RandomGenerator;
@@ -26,6 +28,8 @@ public class Game {
         int playersLifeCount = RandomGenerator.randomIntBetween(3, 5);
         firstPlayer = new Human(firstPlayerName, playersLifeCount);
         secondPlayer = new Human(secondPlayerName, playersLifeCount);
+        firstPlayer.addObserver(new HealthObserver(this));
+        secondPlayer.addObserver(new HealthObserver(this));
         reloadGun();
     }
 
