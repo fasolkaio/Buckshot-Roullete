@@ -8,7 +8,7 @@ public class Handcuff implements Item{
     public ActionResult useItem(Game game) {
         if(game == null)
             throw new UnsupportedOperationException("Unsupported operation. Game not exist");
-        if (game.getActualPlayer().makeSkipTurn())
+        if (game.getActualPlayer().cuff())
             return ActionResult.USE_ITEM_SUCCESS;
         else
             return ActionResult.USE_ITEM_FAILED;

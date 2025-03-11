@@ -1,6 +1,7 @@
 package sk.tuke.kpi.kp.ak.gamelib.core.players;
 
 import lombok.Getter;
+import lombok.Setter;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.Item;
@@ -17,6 +18,7 @@ public abstract class Player {
     private int lifeCount;
     private final int maxLifeCount;
     private final String name;
+    @Setter
     private boolean skipTurn;
     private final List<Item> items;
     private final int itemsCapacity;
@@ -80,7 +82,7 @@ public abstract class Player {
         return skipTurn;
     }
 
-    public boolean makeSkipTurn(){
+    public boolean cuff(){
         if(skipTurn){
             return false;
         }

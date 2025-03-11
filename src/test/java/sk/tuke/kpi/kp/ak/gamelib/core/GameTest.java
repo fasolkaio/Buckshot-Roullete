@@ -7,14 +7,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GameTest {
     @Test
     public void testGameCreated() {
-        Game game = new Game("first", "second");
+        Game game = new Game(false,"first", "second");
         assertNotNull(game.getGun());
         assertEquals(GameState.FIRST_PLAYER_TURN, game.getGameState());
     }
 
     @Test
     public void testGetPlayer(){
-        Game game = new Game("first", "second");
+        Game game = new Game(false,"first", "second");
         assertEquals("first", game.getActualPlayer().getName());
         assertEquals("second", game.getNotActualPlayer().getName());
         game.setGameState(GameState.SECOND_PLAYER_TURN);
@@ -24,7 +24,7 @@ public class GameTest {
 
     @Test
     public void testGetWinner(){
-        Game game = new Game("first", "second");
+        Game game = new Game(false,"first", "second");
         assertNull(game.getWinnerName());
         game.getActualPlayer().makeDamage(10);
         assertEquals("second", game.getWinnerName());
@@ -32,7 +32,7 @@ public class GameTest {
 
     @Test
     public void testReloadGun(){
-        Game game = new Game("first", "second");
+        Game game = new Game(false,"first", "second");
         assertFalse(game.reloadGun());
         while (!game.getGun().isEmpty()){
             game.getGun().removeBullet();
@@ -43,7 +43,7 @@ public class GameTest {
 
     @Test
     public void testRoundOver(){
-        Game game = new Game("first", "second");
+        Game game = new Game(false,"first", "second");
         game.getActualPlayer().makeDamage(10);
         assertEquals(GameState.ENDED, game.getGameState());
     }

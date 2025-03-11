@@ -34,28 +34,33 @@ public class PlayerTest {
 
     @Test
     public void testUseItemWithFailResult() {
-        Game game = new Game("first", "second");
+        Game game = new Game(false,"first", "second");
         Player player = game.getActualPlayer();
         player.addItem(new Cigarettes());
+        int itemsCountBefore = player.getItems().size();
         ActionResult result = player.useItem(Cigarettes.class, game);
         assertEquals(ActionResult.USE_ITEM_FAILED, result);
-        assertEquals(0, player.getItems().size());
+        assertEquals(itemsCountBefore - 1, player.getItems().size());
     }
 
     @Test
     public void testUseItemWithSuccessResult() {
-        Game game = new Game("first", "second");
+        Game game = new Game(false,"first", "second");
         Player player = game.getActualPlayer();
         player.addItem(new Handcuff());
+        int itemsCountBefore = player.getItems().size();
         ActionResult result = player.useItem(Handcuff.class, game);
         assertEquals(ActionResult.USE_ITEM_SUCCESS, result);
-        assertEquals(0, player.getItems().size());
+        assertEquals(itemsCountBefore - 1, player.getItems().size());
     }
 
     @Test
     public void testUseItemWhenPlayerHasNoItems() {
-        Game game = new Game("first", "second");
+        Game game = new Game(false,"first", "second");
         Player player = game.getActualPlayer();
+        while (!player.getItems().isEmpty()) {
+            player.getItems().remove(0);
+        }
         ActionResult result = player.useItem(Beer.class, game);
         assertEquals(ActionResult.USE_ITEM_FAILED, result);
         assertEquals(0, player.getItems().size());

@@ -15,7 +15,7 @@ public class CigarettesTest {
     }
     @Test
     public void testUse(){
-        Game game = new Game("first", "second");
+        Game game = new Game(false,"first", "second");
         Item cigarettes = new Cigarettes();
         Player actual = game.getActualPlayer();
         actual.makeDamage(1);
@@ -26,7 +26,7 @@ public class CigarettesTest {
     }
     @Test
     public void testUseToFull(){
-        Game game = new Game("first", "second");
+        Game game = new Game(false,"first", "second");
         Item cigarettes = new Cigarettes();
         Player actual = game.getActualPlayer();
         int lives = actual.getLifeCount();

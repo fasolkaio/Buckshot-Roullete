@@ -14,7 +14,7 @@ public class SawTest {
     }
     @Test
     public void testUse(){
-        Game game = new Game("first player", "second player");
+        Game game = new Game(false,"first player", "second player");
         Item saw = new Saw();
         int damageBefore = game.getGun().getDamage();
         ActionResult result = saw.useItem(game);

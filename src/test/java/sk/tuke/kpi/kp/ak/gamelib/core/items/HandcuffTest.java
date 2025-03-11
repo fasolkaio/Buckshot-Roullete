@@ -15,7 +15,7 @@ public class HandcuffTest {
     }
     @Test
     public void testUse(){
-        Game game = new Game("first", "second");
+        Game game = new Game(false,"first", "second");
         Item handcuff = new Handcuff();
         Player notActual = game.getActualPlayer();
         boolean before = notActual.scipTurn();
