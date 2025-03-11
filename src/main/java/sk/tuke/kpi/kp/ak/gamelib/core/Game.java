@@ -6,7 +6,7 @@ import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.*;
 import sk.tuke.kpi.kp.ak.gamelib.core.observers.HealthObserver;
-import sk.tuke.kpi.kp.ak.gamelib.core.players.Diller;
+import sk.tuke.kpi.kp.ak.gamelib.core.players.Dealer;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Human;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
 import sk.tuke.kpi.kp.ak.gamelib.core.utilities.RandomGenerator;
@@ -32,7 +32,7 @@ public class Game {
         int playersLifeCount = RandomGenerator.randomIntBetween(3, 5);
         firstPlayer = new Human(firstPlayerName, playersLifeCount);
         if(isGameSolo)
-            secondPlayer = new Diller(secondPlayerName, 1, this);
+            secondPlayer = new Dealer(secondPlayerName, 1, this);
         else
             secondPlayer = new Human(secondPlayerName, playersLifeCount);
         firstPlayer.addObserver(new HealthObserver(this));
@@ -100,4 +100,7 @@ public class Game {
             return secondPlayer;
     }
 
+    public boolean isBot(){
+        return getActualPlayer() instanceof Dealer;
+    }
 }

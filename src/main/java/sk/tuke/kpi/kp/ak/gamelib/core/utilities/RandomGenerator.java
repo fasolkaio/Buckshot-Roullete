@@ -14,4 +14,8 @@ public class RandomGenerator {
         }
         return RANDOM.nextInt((max - min) + 1) + min;
     }
+
+    public static boolean tossCoin() {
+        return RANDOM.nextBoolean();
+    }
 }
