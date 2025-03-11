@@ -2,6 +2,7 @@ package sk.tuke.kpi.kp.ak.gamelib.core.items;
 
 import org.junit.jupiter.api.Test;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,8 +18,8 @@ public class BeerTest {
         Item beer = new Beer();
         int bulletCountBefore = game.getGun().getBulletsCount();
         int liveBulletCountBefore = game.getGun().getLiveBulletsCount();
-        ItemUseResult result = beer.useItem(game);
-        if (result == ItemUseResult.BULLET_WAS_LIVE)
+        ActionResult result = beer.useItem(game);
+        if (result == ActionResult.BULLET_WAS_LIVE)
                 assertEquals(liveBulletCountBefore - 1, game.getGun().getLiveBulletsCount());
         assertEquals(bulletCountBefore - 1, game.getGun().getBulletsCount());
     }
@@ -29,6 +30,6 @@ public class BeerTest {
         while (!game.getGun().isEmpty()) {
             game.getGun().removeBullet();
         }
-        assertEquals(ItemUseResult.USE_ITEM_FAILED, beer.useItem(game));
+        assertEquals(ActionResult.USE_ITEM_FAILED, beer.useItem(game));
     }
 }

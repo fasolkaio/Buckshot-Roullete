@@ -2,6 +2,7 @@ package sk.tuke.kpi.kp.ak.gamelib.core.items;
 
 import org.junit.jupiter.api.Test;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,11 +18,11 @@ public class MagnifyingGlassTest {
         Game game = new Game("first player", "second player");
         Item glass = new MagnifyingGlass();
         boolean isLive = !game.getGun().getBullets().get(0).isBlank();
-        ItemUseResult result = glass.useItem(game);
+        ActionResult result = glass.useItem(game);
         if(isLive)
-            assertEquals(ItemUseResult.BULLET_WAS_LIVE, result);
+            assertEquals(ActionResult.BULLET_WAS_LIVE, result);
         else
-            assertEquals(ItemUseResult.BULLET_WAS_BLANK, result);
+            assertEquals(ActionResult.BULLET_WAS_BLANK, result);
     }
     @Test
     public void testUseWithEmptyGun() {
@@ -30,6 +31,6 @@ public class MagnifyingGlassTest {
         while (!game.getGun().isEmpty()) {
             game.getGun().removeBullet();
         }
-        assertEquals(ItemUseResult.USE_ITEM_FAILED, glass.useItem(game));
+        assertEquals(ActionResult.USE_ITEM_FAILED, glass.useItem(game));
     }
 }

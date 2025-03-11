@@ -2,6 +2,7 @@ package sk.tuke.kpi.kp.ak.gamelib.core.items;
 
 import org.junit.jupiter.api.Test;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,13 +19,13 @@ public class HandcuffTest {
         Item handcuff = new Handcuff();
         Player notActual = game.getActualPlayer();
         boolean before = notActual.scipTurn();
-        ItemUseResult result = handcuff.useItem(game);
+        ActionResult result = handcuff.useItem(game);
         if(!before) {
-            assertEquals(ItemUseResult.USE_ITEM_SUCCESS, result);
+            assertEquals(ActionResult.USE_ITEM_SUCCESS, result);
             assertTrue(game.getActualPlayer().scipTurn());
         }
         else {
-            assertEquals(ItemUseResult.USE_ITEM_FAILED, result);
+            assertEquals(ActionResult.USE_ITEM_FAILED, result);
             assertTrue(game.getActualPlayer().scipTurn());
         }
     }

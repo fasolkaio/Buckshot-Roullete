@@ -1,6 +1,7 @@
 package sk.tuke.kpi.kp.ak.gamelib.core;
 
 import lombok.Getter;
+import lombok.Setter;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Human;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
 import sk.tuke.kpi.kp.ak.gamelib.core.utilities.RandomGenerator;
@@ -9,7 +10,7 @@ import sk.tuke.kpi.kp.ak.gamelib.core.weapon.Gun;
 public class Game {
     @Getter
     private Gun gun;
-    @Getter
+    @Getter @Setter
     private GameState gameState;
     private Player firstPlayer;
     private Player secondPlayer;

@@ -2,12 +2,12 @@ package sk.tuke.kpi.kp.ak.gamelib.core.players;
 
 import lombok.Getter;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.Item;
-import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Getter
 public abstract class Player {
@@ -27,7 +27,7 @@ public abstract class Player {
         items = new ArrayList<>();
     }
 
-    public abstract void doTurn();
+    public abstract ActionResult doTurn(Action action);
 
     public boolean heal(){
         if(lifeCount < maxLifeCount){
@@ -52,12 +52,12 @@ public abstract class Player {
         return false;
     }
 
-    public <I extends Item> ItemUseResult useItem(Class<I> itemClass, Game game) {
+    public <I extends Item> ActionResult useItem(Class<I> itemClass, Game game) {
         Item firstItem = items.stream()
                 .filter(item -> item.getClass()
                 .equals(itemClass))
                 .findFirst().orElse(null);
-        ItemUseResult result = ItemUseResult.USE_ITEM_FAILED;
+        ActionResult result = ActionResult.USE_ITEM_FAILED;
         if(firstItem != null){
             result = firstItem.useItem(game);
             items.remove(firstItem);
