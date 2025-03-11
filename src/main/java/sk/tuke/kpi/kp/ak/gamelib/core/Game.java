@@ -2,6 +2,8 @@ package sk.tuke.kpi.kp.ak.gamelib.core;
 
 import lombok.Getter;
 import lombok.Setter;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Human;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
 import sk.tuke.kpi.kp.ak.gamelib.core.utilities.RandomGenerator;
@@ -16,35 +18,43 @@ public class Game {
     private Player secondPlayer;
 
     public Game(String firstPlayerName, String secondPlayerName) {
-        gun = new Gun();
         gameState = GameState.FIRST_PLAYER_TURN;
+        initRound(firstPlayerName, secondPlayerName);
+    }
+
+    public void initRound(String firstPlayerName, String secondPlayerName){
         int playersLifeCount = RandomGenerator.randomIntBetween(3, 5);
         firstPlayer = new Human(firstPlayerName, playersLifeCount);
         secondPlayer = new Human(secondPlayerName, playersLifeCount);
+        reloadGun();
     }
 
-    public void startGame(){
-        //TODO
+    //if old is empty or does not exist crate new gun and return true
+    public boolean reloadGun(){
+        if(gun != null && !gun.isEmpty())
+            return false;
+        gun = new Gun();
+        return true;
     }
 
-    private void initRound(){
-        //TODO
-    }
+    public ActionResult playTurn(Action action){
+        if(gun == null || gun.isEmpty())
+            throw new UnsupportedOperationException("Game does not completed, reload gun to continue!");
 
-    public void playTurn(){
-        //TODO
+        return getActualPlayer().doTurn(action);
     }
 
     public boolean isGameOver(){
-        //TODO
-        return false;
+        return gameState.equals(GameState.ENDED);
     }
 
-    public Player getWinner(){
+    public String getWinnerName(){
         if(firstPlayer.getLifeCount() == 0)
-            return secondPlayer;
+            return secondPlayer.getName();
+        else if(secondPlayer.getLifeCount() == 0)
+            return firstPlayer.getName();
         else
-            return firstPlayer;
+            return null;
     }
 
     public Player getActualPlayer() {
