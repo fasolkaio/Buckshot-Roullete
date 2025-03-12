@@ -48,7 +48,9 @@ public class ConsoleUI implements GameUI{
             if(!firstRound)
                 game.reinitRound();
             firstRound = false;
+
             gui.showGun(game.getGun());
+
             while (!game.isRoundEnded()){
                 if(game.getGun().isEmpty()){
                     game.reloadGun();
@@ -58,6 +60,7 @@ public class ConsoleUI implements GameUI{
                 handleInput();
             }
             show();
+
             if(!(game.isSingleGame() && doubleOrNothing())){
                 game.setGameState(GameState.GAME_ENDED);
             }

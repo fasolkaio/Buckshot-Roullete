@@ -8,7 +8,7 @@ public class Handcuff extends Item{
     public ItemUseResult useItem(Game game) {
         if(game == null)
             throw new UnsupportedOperationException("Unsupported operation. Game not exist");
-        Player player = game.getActualPlayer();
+        Player player = game.getNotActualPlayer();
         if(player == null)
             return ItemUseResult.ERROR;
         if (player.cuff())
