@@ -20,21 +20,40 @@ public class Game {
     private Player firstPlayer;
     private Player secondPlayer;
     @Getter
-    private final boolean isGameSolo;
+    private final boolean singleGame;
 
-    public Game(boolean isGameSolo, String firstPlayerName, String secondPlayerName) {
+    public Game(String firstPlayerName, String secondPlayerName) {
         gameState = GameState.FIRST_PLAYER_TURN;
-        this.isGameSolo = isGameSolo;
+        this.singleGame = false;
         initRound(firstPlayerName, secondPlayerName);
+    }
+
+    public Game(String firstPlayerName) {
+        gameState = GameState.FIRST_PLAYER_TURN;
+        this.singleGame = true;
+        initRound(firstPlayerName, "Dealer");
     }
 
     public void initRound(String firstPlayerName, String secondPlayerName){
         int playersLifeCount = RandomGenerator.randomIntBetween(3, 5);
         firstPlayer = new Human(firstPlayerName, playersLifeCount);
-        if(isGameSolo)
-            secondPlayer = new Dealer(secondPlayerName, 1, this);
+        if(singleGame)
+            secondPlayer = new Dealer(secondPlayerName, playersLifeCount, this);
         else
             secondPlayer = new Human(secondPlayerName, playersLifeCount);
+        firstPlayer.addObserver(new HealthObserver(this));
+        secondPlayer.addObserver(new HealthObserver(this));
+        generateItems();
+        reloadGun();
+    }
+
+    public void reinitRound(){
+        int playersLifeCount = RandomGenerator.randomIntBetween(3, 5);
+        firstPlayer = new Human(firstPlayer.getName(), playersLifeCount);
+        if(singleGame)
+            secondPlayer = new Dealer(secondPlayer.getName(), playersLifeCount, this);
+        else
+            secondPlayer = new Human(secondPlayer.getName(), playersLifeCount);
         firstPlayer.addObserver(new HealthObserver(this));
         secondPlayer.addObserver(new HealthObserver(this));
         generateItems();
@@ -73,10 +92,6 @@ public class Game {
         return result;
     }
 
-    public boolean isGameOver(){
-        return gameState.equals(GameState.ENDED);
-    }
-
     public String getWinnerName(){
         if(firstPlayer.getLifeCount() == 0)
             return secondPlayer.getName();
@@ -100,7 +115,15 @@ public class Game {
             return secondPlayer;
     }
 
-    public boolean isBot(){
+    public boolean isBotTurn(){
         return getActualPlayer() instanceof Dealer;
+    }
+
+    public boolean isRoundEnded(){
+        return gameState.equals(GameState.ROUND_ENDED);
+    }
+
+    public boolean isEnded(){
+        return gameState.equals(GameState.GAME_ENDED);
     }
 }

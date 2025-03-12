@@ -10,6 +10,6 @@ public class HealthObserver implements GameObserver {
 
     @Override
     public void notifyGame() {
-        game.setGameState(GameState.ENDED);
+        game.setGameState(GameState.ROUND_ENDED);
     }
 }

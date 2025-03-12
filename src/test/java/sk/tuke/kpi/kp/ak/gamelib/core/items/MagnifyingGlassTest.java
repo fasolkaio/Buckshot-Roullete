@@ -15,7 +15,7 @@ public class MagnifyingGlassTest {
     }
     @Test
     public void testUse() {
-        Game game = new Game(false,"first player", "second player");
+        Game game = new Game("first player", "second player");
         Item glass = new MagnifyingGlass();
         boolean isLive = !game.getGun().getBullets().get(0).isBlank();
         ActionResult result = glass.useItem(game);
@@ -26,7 +26,7 @@ public class MagnifyingGlassTest {
     }
     @Test
     public void testUseWithEmptyGun() {
-        Game game = new Game(false,"first player", "second player");
+        Game game = new Game("first player", "second player");
         Item glass = new MagnifyingGlass();
         while (!game.getGun().isEmpty()) {
             game.getGun().removeBullet();

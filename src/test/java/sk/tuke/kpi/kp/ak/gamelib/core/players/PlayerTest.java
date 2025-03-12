@@ -34,7 +34,7 @@ public class PlayerTest {
 
     @Test
     public void testUseItemWithFailResult() {
-        Game game = new Game(false,"first", "second");
+        Game game = new Game("first", "second");
         Player player = game.getActualPlayer();
         player.addItem(new Cigarettes());
         int itemsCountBefore = player.getItems().size();
@@ -45,7 +45,7 @@ public class PlayerTest {
 
     @Test
     public void testUseItemWithSuccessResult() {
-        Game game = new Game(false,"first", "second");
+        Game game = new Game("first", "second");
         Player player = game.getActualPlayer();
         player.addItem(new Handcuff());
         int itemsCountBefore = player.getItems().size();
@@ -56,7 +56,7 @@ public class PlayerTest {
 
     @Test
     public void testUseItemWhenPlayerHasNoItems() {
-        Game game = new Game(false,"first", "second");
+        Game game = new Game("first", "second");
         Player player = game.getActualPlayer();
         while (!player.getItems().isEmpty()) {
             player.getItems().remove(0);

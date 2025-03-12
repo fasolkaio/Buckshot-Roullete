@@ -15,7 +15,7 @@ public class ShootTest {
 
     @Test
     public void testShotOpponent(){
-        Game game = new Game(false,"first player", "second player");
+        Game game = new Game("first player", "second player");
         Action shoot = new Shoot(false, game);
         shoot.execute();
         assertEquals(GameState.SECOND_PLAYER_TURN,game.getGameState());
@@ -23,7 +23,7 @@ public class ShootTest {
 
     @Test
     public void testShotYourself(){
-        Game game = new Game(false,"first player", "second player");
+        Game game = new Game("first player", "second player");
         Action shoot = new Shoot(true, game);
         ActionResult action = shoot.execute();
         if(action == ActionResult.HIT_SUCCESS)

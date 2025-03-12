@@ -4,7 +4,7 @@ import sk.tuke.kpi.kp.ak.gamelib.core.Game;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.weapon.Gun;
 
-public class Beer implements Item {
+public class Beer extends Item {
 
     @Override
     public ActionResult useItem(Game game) {

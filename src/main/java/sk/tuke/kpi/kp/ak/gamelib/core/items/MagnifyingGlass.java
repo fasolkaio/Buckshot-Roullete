@@ -4,7 +4,7 @@ import sk.tuke.kpi.kp.ak.gamelib.core.Game;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.weapon.Gun;
 
-public class MagnifyingGlass implements Item {
+public class MagnifyingGlass extends Item {
     @Override
     public ActionResult useItem(Game game) {
         if(game == null)

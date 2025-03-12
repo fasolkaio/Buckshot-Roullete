@@ -3,7 +3,7 @@ package sk.tuke.kpi.kp.ak.gamelib.core.items;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 
-public class Handcuff implements Item{
+public class Handcuff extends Item{
     @Override
     public ActionResult useItem(Game game) {
         if(game == null)

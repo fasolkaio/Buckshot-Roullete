@@ -14,7 +14,7 @@ public class BeerTest {
     }
     @Test
     public void testUse() {
-        Game game = new Game(false,"first player", "second player");
+        Game game = new Game("first player", "second player");
         Item beer = new Beer();
         int bulletCountBefore = game.getGun().getBulletsCount();
         int liveBulletCountBefore = game.getGun().getLiveBulletsCount();
@@ -25,7 +25,7 @@ public class BeerTest {
     }
     @Test
     public void testUseWithEmptyGun() {
-        Game game = new Game(false,"first player", "second player");
+        Game game = new Game("first player", "second player");
         Item beer = new Beer();
         while (!game.getGun().isEmpty()) {
             game.getGun().removeBullet();
