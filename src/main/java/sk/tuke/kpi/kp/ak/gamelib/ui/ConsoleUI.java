@@ -3,6 +3,7 @@ package sk.tuke.kpi.kp.ak.gamelib.ui;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
 import sk.tuke.kpi.kp.ak.gamelib.core.GameState;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Shoot;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.UseItem;
@@ -44,18 +45,19 @@ public class ConsoleUI implements GameUI{
             throw new UnsupportedOperationException("Game is null");
 
         while (!game.isEnded()){
-            showGun(game.getGun());
+            if(!firstRound)
+                game.reinitRound();
+            firstRound = false;
+            gui.showGun(game.getGun());
             while (!game.isRoundEnded()){
-                if(!firstRound)
+                if(game.getGun().isEmpty()){
                     game.reinitRound();
-                firstRound = false;
+                    gui.showGun(game.getGun());
+                }
                 show();
-                if(game.isBotTurn())
-                    gui.printDealerActionResult(null);
-                else
-                    handleInput();
+                handleInput();
             }
-
+            show();
             if(!(game.isSingleGame() && doubleOrNothing())){
                 game.setGameState(GameState.GAME_ENDED);
             }
@@ -86,21 +88,27 @@ public class ConsoleUI implements GameUI{
     public void handleInput() {
         if (game == null)
             throw new UnsupportedOperationException("Game is null");
-        String input = scanner.nextLine().trim().toLowerCase();
+        Action action = null;
+        if(!game.isBotTurn()){
+            String input = scanner.nextLine().trim().toLowerCase();
+            Matcher matcherUse = usePattern.matcher(input);
+            Matcher matcherShoot = shootPattern.matcher(input);
 
-        Matcher matcherUse = usePattern.matcher(input);
-        Matcher matcherShoot = shootPattern.matcher(input);
-
-        if(matcherUse.find())
-            useItem(matcherUse);
-        else if(matcherShoot.find())
-            shootPlayer(matcherShoot);
-        else{
-            System.out.println("Wrong input!");
+            if(matcherUse.find())
+                action = useItem(matcherUse);
+            else if(matcherShoot.find())
+                action = shootPlayer(matcherShoot);
+            else{
+                System.out.println("Wrong input!");
+            }
+            if(action == null)
+                throw new UnsupportedOperationException("No action found");
         }
+
+        gui.printActionResult(game.playTurn(action));
     }
 
-    private void useItem(Matcher matcher) {
+    private Action useItem(Matcher matcher) {
 
         Class<? extends Item> itemClass = null;
         switch (matcher.group(2)) {
@@ -123,12 +131,10 @@ public class ConsoleUI implements GameUI{
                 throw new UnsupportedOperationException("Unknown operation parameter: " + matcher.group(1));
         }
 
-        Action action = new UseItem(game, itemClass);
-        //ItemUseResult result = game.playTurn(action);
-        gui.printUseActionResult(null);
+        return new UseItem(game, itemClass);
     }
 
-    private void shootPlayer(Matcher matcher) {
+    private Action shootPlayer(Matcher matcher) {
         boolean selfShoot;
         switch (matcher.group(2)) {
             case "m":
@@ -140,11 +146,7 @@ public class ConsoleUI implements GameUI{
             default:
                 throw new UnsupportedOperationException("Unknown operation parameter: " + matcher.group(1));
         }
-
-        Player actualPlayer = game.getActualPlayer();
-        Action action = new Shoot(game, selfShoot);
-        //ItemUseResult result = game.playTurn(action);
-        gui.printShootResult(actualPlayer.getName(), selfShoot, null);
+        return new Shoot(game, selfShoot);
     }
 
     private boolean doubleOrNothing(){
@@ -163,16 +165,6 @@ public class ConsoleUI implements GameUI{
         return scanner.nextLine();
     }
 
-    private void showGun(Gun gun) {
-        gui.printRepeatedLineOf("*");
-        System.out.printf("Gun was reloaded: %d live around | %d blank%n", gun.getLiveBulletsCount(), gun.getBulletsCount() - gun.getLiveBulletsCount());
-        gui.printRepeatedLineOf("*");
-    }
-
-    private void printGameLogo(){
-        System.out.println("Welcome to BuckShot Roulette!");
-    }
-
     private boolean isGameSolo(){
         System.out.print("Do you wanna play solo? (y/n) ");
         String input = scanner.nextLine().toLowerCase();
@@ -184,5 +176,7 @@ public class ConsoleUI implements GameUI{
         return input.equals("y") || input.equals("yes");
     }
 
-
+    private void printGameLogo(){
+        System.out.println("Welcome to BuckShot Roulette!");
+    }
 }

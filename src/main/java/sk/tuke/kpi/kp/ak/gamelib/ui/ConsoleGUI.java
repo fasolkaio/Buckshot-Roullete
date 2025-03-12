@@ -2,10 +2,12 @@ package sk.tuke.kpi.kp.ak.gamelib.ui;
 
 import lombok.AllArgsConstructor;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.Item;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Human;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
+import sk.tuke.kpi.kp.ak.gamelib.core.weapon.Gun;
 
 @AllArgsConstructor
 public class ConsoleGUI {
@@ -42,6 +44,16 @@ public class ConsoleGUI {
                 .toArray(String[]::new)));
     }
 
+    public void showGun(Gun gun) {
+        printRepeatedLineOf("*");
+        System.out.printf("Gun was reloaded: %d live around | %d blank%n", gun.getLiveBulletsCount(), gun.getBulletsCount() - gun.getLiveBulletsCount());
+        printRepeatedLineOf("*");
+    }
+
+    public void printActionResult(ActionResult actionResult) {
+
+    }
+
     public void printRepeatedLineOf(String string) {
         System.out.println("\n" + string.repeat(40) + "\n");
     }
@@ -53,63 +65,4 @@ public class ConsoleGUI {
                 "\nEnter your turn: ");
     }
 
-    public void printUseActionResult(ItemUseResult result) {
-        switch (result){
-            case BULLET_WAS_BLANK:
-                System.out.println("Bullet was blank!");
-                break;
-            case BULLET_WAS_LIVE:
-                System.out.println("Bullet was live!");
-                break;
-            case USE_ITEM_SUCCESS:
-                System.out.println("You have successfully used the item!");
-                break;
-            case USE_ITEM_FAILED:
-                System.out.println("You have failed to use the item!");
-                break;
-            default:
-                throw new UnsupportedOperationException("Unsupported action result: " + result);
-        }
-    }
-
-    public void printShootResult(String shooter, boolean selfshoot, ItemUseResult result) {
-        String shooted = selfshoot ? "himself" : "opponent";
-
-//        switch (result) {
-//            case HIT_SUCCESS:
-//                System.out.println(shooter + " shooted "+ shooted + " succesful");
-//                break;
-//            case HIT_FAILED:
-//                System.out.println(shooter + " shooted " + shooted + " failure");
-//                break;
-//            default:
-//                throw new UnsupportedOperationException("Unknown operation result: " + result);
-//        }
-
-    }
-
-    public void printDealerActionResult(ItemUseResult ItemUseResult) {
-//        switch(ItemUseResult){
-//            case HIT_FAILED:
-//                System.out.println("Dealer shoot failed");
-//                break;
-//            case HIT_SUCCESS:
-//                System.out.println("Dealer shoot successful");
-//                break;
-//            case USE_ITEM_SUCCESS:
-//                System.out.println("Dealer use item successful");
-//                break;
-//            case USE_ITEM_FAILED:
-//                System.out.println("Dealer use item failed");
-//                break;
-//            case BULLET_WAS_LIVE:
-//                System.out.println("Dealer bullet was live");
-//                break;
-//            case BULLET_WAS_BLANK:
-//                System.out.println("Dealer bullet was blank");
-//                break;
-//            default:
-//                throw new UnsupportedOperationException("Unsupported action result: " + ItemUseResult.toString());
-//        }
-    }
 }
