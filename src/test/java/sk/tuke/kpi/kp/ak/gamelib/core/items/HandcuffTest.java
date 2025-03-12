@@ -13,19 +13,19 @@ public class HandcuffTest {
         assertThrows(UnsupportedOperationException.class, () -> handcuff.useItem(null));
     }
     @Test
-    public void testUse(){
+    public void testUseItem(){
         Game game = new Game("first", "second");
         Item handcuff = new Handcuff();
-        Player notActual = game.getActualPlayer();
-        boolean before = notActual.scipTurn();
-        ItemUseResult result = handcuff.useItem(game);
-        if(!before) {
-            assertEquals(ItemUseResult.USE_ITEM_SUCCESS, result);
-            assertTrue(game.getActualPlayer().scipTurn());
-        }
-        else {
-            assertEquals(ItemUseResult.USE_ITEM_FAILED, result);
-            assertTrue(game.getActualPlayer().scipTurn());
-        }
+        Player notActual = game.getNotActualPlayer();
+        ItemUseResult result1 = handcuff.useItem(game);
+
+        assertEquals(ItemUseResult.USE_ITEM_SUCCESS, result1);
+        assertTrue(notActual.scipTurn());
+
+        ItemUseResult result2 = handcuff.useItem(game);
+
+        assertEquals(ItemUseResult.USE_ITEM_FAILED, result2);
+        assertTrue(notActual.scipTurn());
+
     }
 }

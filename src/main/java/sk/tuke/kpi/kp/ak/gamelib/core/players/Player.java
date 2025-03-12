@@ -77,7 +77,8 @@ public abstract class Player {
         ItemUseResult result = ItemUseResult.USE_ITEM_FAILED;
         if(firstItem != null){
             result = firstItem.useItem(game);
-            items.remove(firstItem);
+            if(!(result == ItemUseResult.USE_ITEM_FAILED))
+                items.remove(firstItem);
         }
 
         return result;

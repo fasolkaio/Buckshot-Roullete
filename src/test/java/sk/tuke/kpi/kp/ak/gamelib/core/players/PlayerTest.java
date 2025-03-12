@@ -40,7 +40,7 @@ public class PlayerTest {
         int itemsCountBefore = player.getItems().size();
         ItemUseResult result = player.useItem(Cigarettes.class, game);
         assertEquals(ItemUseResult.USE_ITEM_FAILED, result);
-        assertEquals(itemsCountBefore - 1, player.getItems().size());
+        assertEquals(itemsCountBefore, player.getItems().size());
     }
 
     @Test
