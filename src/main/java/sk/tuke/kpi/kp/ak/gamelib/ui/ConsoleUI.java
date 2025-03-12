@@ -51,7 +51,7 @@ public class ConsoleUI implements GameUI{
             gui.showGun(game.getGun());
             while (!game.isRoundEnded()){
                 if(game.getGun().isEmpty()){
-                    game.reinitRound();
+                    game.reloadGun();
                     gui.showGun(game.getGun());
                 }
                 show();
@@ -100,9 +100,8 @@ public class ConsoleUI implements GameUI{
                 action = shootPlayer(matcherShoot);
             else{
                 System.out.println("Wrong input!");
+                return;
             }
-            if(action == null)
-                throw new UnsupportedOperationException("No action found");
         }
 
         gui.printActionResult(game.playTurn(action));

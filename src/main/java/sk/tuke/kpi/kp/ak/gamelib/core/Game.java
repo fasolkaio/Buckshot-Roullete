@@ -4,8 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
-import sk.tuke.kpi.kp.ak.gamelib.core.actions.SkipTurn;
-import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.SkipTurnActionResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.*;
 import sk.tuke.kpi.kp.ak.gamelib.core.observers.HealthObserver;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Dealer;
@@ -88,8 +87,10 @@ public class Game {
             throw new UnsupportedOperationException("Game does not completed, reload gun to continue!");
         if(!getActualPlayer().scipTurn())
             return getActualPlayer().doTurn(action);
-        else
-            return new SkipTurn();
+        else{
+            getActualPlayer().setSkipTurn(false);
+            return new SkipTurnActionResult(getActualPlayer());
+        }
     }
 
     public void switchTurn(){

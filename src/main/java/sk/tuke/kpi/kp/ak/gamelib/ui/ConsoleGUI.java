@@ -2,9 +2,9 @@ package sk.tuke.kpi.kp.ak.gamelib.ui;
 
 import lombok.AllArgsConstructor;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
-import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
-import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.*;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.Item;
+import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Human;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
 import sk.tuke.kpi.kp.ak.gamelib.core.weapon.Gun;
@@ -51,7 +51,50 @@ public class ConsoleGUI {
     }
 
     public void printActionResult(ActionResult actionResult) {
+        if(actionResult == null)
+            throw new UnsupportedOperationException("No action result");
 
+        if(actionResult instanceof SkipTurnActionResult)
+            System.out.println("Player " + ((SkipTurnActionResult) actionResult).getPlayer().getName().toUpperCase() + " skipped turn");
+        else if(actionResult instanceof ShootActionResult)
+            printShootActionResult((ShootActionResult) actionResult);
+        else if(actionResult instanceof UseActionResult)
+            printUseItemActionResult((UseActionResult) actionResult);
+        else
+            throw new UnsupportedOperationException("Unsupported action result: " + actionResult.getClass().getSimpleName());
+    }
+
+    private void printUseItemActionResult(UseActionResult actionResult) {
+        if(actionResult == null)
+            throw new UnsupportedOperationException("No action result");
+        String playerName = actionResult.getPlayer().getName().toUpperCase();
+        String itemName = actionResult.getItemClass().getSimpleName().toLowerCase();
+
+        if(actionResult.getItemUseResult() == ItemUseResult.ERROR) {
+            System.out.println("Error in using item: " + itemName);
+            return;
+        }
+
+        if(actionResult.getItemUseResult() == ItemUseResult.USE_ITEM_FAILED){
+            System.out.println("Player " + playerName + " can't use " + itemName);
+            return;
+        }
+
+        System.out.println("Player " + playerName + " used " + itemName + " successfully");
+        if(actionResult.getItemUseResult() == ItemUseResult.BULLET_WAS_BLANK){
+            System.out.println("Bullet was blank");
+        }
+        else if(actionResult.getItemUseResult() == ItemUseResult.BULLET_WAS_LIVE){
+            System.out.println("Bullet was live");
+        }
+    }
+
+    private void printShootActionResult(ShootActionResult actionResult) {
+        String playerName = actionResult.getPlayer().getName().toUpperCase();
+        String status = actionResult.isShootResult() ? " hit " : " missed a shot at ";
+        String who = actionResult.isSelfShoot() ? "himself" : "the opponent";
+
+        System.out.println("Player " + playerName  + status + who);
     }
 
     public void printRepeatedLineOf(String string) {

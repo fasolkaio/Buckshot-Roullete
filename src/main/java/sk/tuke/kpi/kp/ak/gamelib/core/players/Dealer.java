@@ -55,7 +55,7 @@ public class Dealer extends Player {
     }
 
     private Action generateAction(){
-        //use cigarettes if need
+        //use cigarettes if you need
         if((getLifeCount() < getMaxLifeCount()) && isItemPresent(Cigarettes.class)){
             return new UseItem(game, Cigarettes.class);
         }
@@ -72,12 +72,12 @@ public class Dealer extends Player {
             return new UseItem(game, MagnifyingGlass.class);
         }
 
-        //use beer if have low chance
+        //use beer if you have low chance
         if(Chance.LOW.equals(currentChance) && isItemPresent(Beer.class)) {
             return new UseItem(game, Beer.class);
         }
 
-        //use saw if wanna hoot opponent
+        //use saw if you want to hoot opponent
         if((currentChance == Chance.HIGH || currentChance == Chance.FULL) && isItemPresent(Saw.class) && !sawWasUsed){
             remember = true;
             sawWasUsed = true;
