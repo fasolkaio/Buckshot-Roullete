@@ -4,8 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
-import sk.tuke.kpi.kp.ak.gamelib.core.items.Item;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
+import sk.tuke.kpi.kp.ak.gamelib.core.items.Item;
+import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.observers.GameObserver;
 import sk.tuke.kpi.kp.ak.gamelib.core.observers.HealthObserver;
 
@@ -18,10 +19,10 @@ public abstract class Player {
     private int lifeCount;
     private final int maxLifeCount;
     private final String name;
-    @Setter
-    private boolean skipTurn;
     private final List<Item> items;
     private final int itemsCapacity;
+    @Setter
+    private boolean skipTurn;
     private final HashSet<GameObserver> observers;
 
     public Player(String name, int maxLifeCount) {
@@ -44,7 +45,7 @@ public abstract class Player {
         return false;
     }
 
-    public void makeDamage(int damage){
+    public void getDamage(int damage){
         lifeCount -= damage;
         if(lifeCount < 0)
             lifeCount = 0;
@@ -52,8 +53,12 @@ public abstract class Player {
             observers.stream().filter(o -> o instanceof HealthObserver).forEach(GameObserver::notifyGame);
     }
 
-    public  void addObserver(GameObserver observer){
-        observers.add(observer);
+    public boolean cuff(){
+        if(skipTurn){
+            return false;
+        }
+        skipTurn = true;
+        return true;
     }
 
     public boolean addItem(Item item){
@@ -64,12 +69,12 @@ public abstract class Player {
         return false;
     }
 
-    public <I extends Item> ActionResult useItem(Class<I> itemClass, Game game) {
+    public <I extends Item> ItemUseResult useItem(Class<I> itemClass, Game game) {
         Item firstItem = items.stream()
                 .filter(item -> item.getClass()
                 .equals(itemClass))
                 .findFirst().orElse(null);
-        ActionResult result = ActionResult.USE_ITEM_FAILED;
+        ItemUseResult result = ItemUseResult.USE_ITEM_FAILED;
         if(firstItem != null){
             result = firstItem.useItem(game);
             items.remove(firstItem);
@@ -81,12 +86,7 @@ public abstract class Player {
     public boolean scipTurn(){
         return skipTurn;
     }
-
-    public boolean cuff(){
-        if(skipTurn){
-            return false;
-        }
-        skipTurn = true;
-        return true;
+    public  void addObserver(GameObserver observer){
+        observers.add(observer);
     }
 }

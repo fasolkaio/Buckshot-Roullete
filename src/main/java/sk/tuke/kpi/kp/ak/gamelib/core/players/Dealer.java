@@ -1,10 +1,8 @@
 package sk.tuke.kpi.kp.ak.gamelib.core.players;
 
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
-import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
-import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
-import sk.tuke.kpi.kp.ak.gamelib.core.actions.Shoot;
-import sk.tuke.kpi.kp.ak.gamelib.core.actions.UseItem;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.*;
+import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.*;
 import sk.tuke.kpi.kp.ak.gamelib.core.utilities.RandomGenerator;
 
@@ -34,13 +32,13 @@ public class Dealer extends Player {
         Action actionToUse = generateAction();
         ActionResult result = actionToUse.execute();
         if(remember){
-            if(result == ActionResult.BULLET_WAS_BLANK)
+            if(result instanceof UseActionResult && ((UseActionResult) result).getItemUseResult() == ItemUseResult.BULLET_WAS_BLANK)
                 nextChance = Chance.ZERO;
             else
                 nextChance = Chance.FULL;
         }
 
-        return null;
+        return result;
     }
 
     private Chance getCurrentChance() {
@@ -63,7 +61,7 @@ public class Dealer extends Player {
         }
 
         //use handcuff if can
-        if(currentChance != Chance.ZERO && isItemPresent(Handcuff.class)){
+        if(currentChance != Chance.ZERO && isItemPresent(Handcuff.class) && !handcuffWereUsed){
             handcuffWereUsed = true;
             return new UseItem(game, Handcuff.class);
         }
@@ -80,7 +78,7 @@ public class Dealer extends Player {
         }
 
         //use saw if wanna hoot opponent
-        if((currentChance == Chance.HIGH || currentChance == Chance.FULL) && isItemPresent(Saw.class)){
+        if((currentChance == Chance.HIGH || currentChance == Chance.FULL) && isItemPresent(Saw.class) && !sawWasUsed){
             remember = true;
             sawWasUsed = true;
             return new UseItem(game, Saw.class);
@@ -90,9 +88,9 @@ public class Dealer extends Player {
         sawWasUsed = false;
         handcuffWereUsed = false;
         if(shootOpponent()){
-            return new Shoot(false, game);
+            return new Shoot(game, false);
         }
-        return new Shoot(true, game);
+        return new Shoot(game, true);
     }
 
     private boolean shootOpponent() {

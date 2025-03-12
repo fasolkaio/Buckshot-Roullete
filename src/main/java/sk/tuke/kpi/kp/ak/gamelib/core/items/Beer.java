@@ -1,21 +1,20 @@
 package sk.tuke.kpi.kp.ak.gamelib.core.items;
 
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
-import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.weapon.Gun;
 
 public class Beer extends Item {
 
     @Override
-    public ActionResult useItem(Game game) {
+    public ItemUseResult useItem(Game game) {
         if(game == null)
             throw new UnsupportedOperationException("Unsupported operation. Game not exist");
         Gun gun = game.getGun();
-        if (gun.isEmpty())
-            return ActionResult.USE_ITEM_FAILED;
+        if (gun == null || gun.isEmpty())
+            return ItemUseResult.ERROR;
         if (gun.removeBullet())
-            return ActionResult.BULLET_WAS_LIVE;
+            return ItemUseResult.BULLET_WAS_LIVE;
         else
-            return ActionResult.BULLET_WAS_BLANK;
+            return ItemUseResult.BULLET_WAS_BLANK;
     }
 }

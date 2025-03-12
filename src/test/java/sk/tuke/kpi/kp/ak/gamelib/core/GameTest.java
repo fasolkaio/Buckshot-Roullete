@@ -39,7 +39,7 @@ public class GameTest {
     public void testGetWinner(){
         Game game = new Game("first", "second");
         assertNull(game.getWinnerName());
-        game.getActualPlayer().makeDamage(10);
+        game.getActualPlayer().getDamage(10);
         assertEquals("second", game.getWinnerName());
     }
 
@@ -57,7 +57,7 @@ public class GameTest {
     @Test
     public void testRoundOver(){
         Game game = new Game("first", "second");
-        game.getActualPlayer().makeDamage(10);
+        game.getActualPlayer().getDamage(10);
         assertEquals(GameState.ROUND_ENDED, game.getGameState());
     }
 }

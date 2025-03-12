@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
+import sk.tuke.kpi.kp.ak.gamelib.core.actions.SkipTurn;
+import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.*;
 import sk.tuke.kpi.kp.ak.gamelib.core.observers.HealthObserver;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Dealer;
@@ -84,12 +86,16 @@ public class Game {
     public ActionResult playTurn(Action action){
         if(gun == null || gun.isEmpty())
             throw new UnsupportedOperationException("Game does not completed, reload gun to continue!");
-        ActionResult result = null;
         if(!getActualPlayer().scipTurn())
-            result = getActualPlayer().doTurn(action);
+            return getActualPlayer().doTurn(action);
         else
-            getActualPlayer().setSkipTurn(false);
-        return result;
+            return new SkipTurn();
+    }
+
+    public void switchTurn(){
+        gameState = gameState == GameState.FIRST_PLAYER_TURN
+                ? GameState.SECOND_PLAYER_TURN
+                : GameState.FIRST_PLAYER_TURN;
     }
 
     public String getWinnerName(){

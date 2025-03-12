@@ -1,16 +1,19 @@
 package sk.tuke.kpi.kp.ak.gamelib.core.items;
 
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
-import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
+import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
 
 public class Handcuff extends Item{
     @Override
-    public ActionResult useItem(Game game) {
+    public ItemUseResult useItem(Game game) {
         if(game == null)
             throw new UnsupportedOperationException("Unsupported operation. Game not exist");
-        if (game.getActualPlayer().cuff())
-            return ActionResult.USE_ITEM_SUCCESS;
+        Player player = game.getActualPlayer();
+        if(player == null)
+            return ItemUseResult.ERROR;
+        if (player.cuff())
+            return ItemUseResult.USE_ITEM_SUCCESS;
         else
-            return ActionResult.USE_ITEM_FAILED;
+            return ItemUseResult.USE_ITEM_FAILED;
     }
 }

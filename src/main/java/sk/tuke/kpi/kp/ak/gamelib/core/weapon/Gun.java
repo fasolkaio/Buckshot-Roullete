@@ -57,6 +57,18 @@ public class Gun {
         return isLive;
     }
 
+    public boolean shoot(Player player){
+        if(player == null)
+            throw new NullPointerException("player is null");
+        if (removeBullet()){
+            player.getDamage(damage);
+            normalizeDamage();
+            return true;
+        }
+        normalizeDamage();
+        return false;
+    }
+
     public boolean doubleDamage(){
         if(damage != 1)
             return false;
@@ -64,18 +76,8 @@ public class Gun {
         return true;
     }
 
-    public void normalizeDamage(){
+    private void normalizeDamage(){
         setDamage(1);
-    }
-
-    public boolean shoot(Player player){
-        if(player == null)
-            throw new NullPointerException("player is null");
-        if (removeBullet()){
-            player.makeDamage(damage);
-            return true;
-        }
-        return false;
     }
 
     public boolean isEmpty(){

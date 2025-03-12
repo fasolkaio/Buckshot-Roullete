@@ -3,11 +3,10 @@ package sk.tuke.kpi.kp.ak.gamelib.ui;
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
 import sk.tuke.kpi.kp.ak.gamelib.core.GameState;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
-import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
+import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Shoot;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.UseItem;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.*;
-import sk.tuke.kpi.kp.ak.gamelib.core.players.Human;
 import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
 import sk.tuke.kpi.kp.ak.gamelib.core.weapon.Gun;
 
@@ -17,6 +16,7 @@ import java.util.regex.Pattern;
 
 public class ConsoleUI implements GameUI{
     private final Game game;
+    private final ConsoleGUI gui;
     private final Scanner scanner;
     private boolean firstRound;
     private final Pattern usePattern;
@@ -35,6 +35,7 @@ public class ConsoleUI implements GameUI{
         else{
             game = new Game(askName(), askName());
         }
+        gui = new ConsoleGUI(game);
     }
 
     @Override
@@ -43,15 +44,14 @@ public class ConsoleUI implements GameUI{
             throw new UnsupportedOperationException("Game is null");
 
         while (!game.isEnded()){
-            if(!firstRound)
-                game.reinitRound();
-            firstRound = false;
-
             showGun(game.getGun());
             while (!game.isRoundEnded()){
+                if(!firstRound)
+                    game.reinitRound();
+                firstRound = false;
                 show();
                 if(game.isBotTurn())
-                    printDealerActionResult(game.playTurn(null));
+                    gui.printDealerActionResult(null);
                 else
                     handleInput();
             }
@@ -67,19 +67,19 @@ public class ConsoleUI implements GameUI{
     public void show() {
         if (game == null)
             throw new UnsupportedOperationException("Game is null");
-        printRepeatedLineOf("=");
+        gui.printRepeatedLineOf("=");
 
         //print players
         System.out.print("Turn of player: ");
-        printPlayerInfo(game.getActualPlayer());
-        printRepeatedLineOf("-");
+        gui.printPlayerInfo(game.getActualPlayer());
+        gui.printRepeatedLineOf("-");
         System.out.print("Another player: ");
-        printPlayerInfo(game.getNotActualPlayer());
-        printRepeatedLineOf("-");
+        gui.printPlayerInfo(game.getNotActualPlayer());
+        gui.printRepeatedLineOf("-");
 
         //print input rules
         if(!game.isBotTurn())
-            printInputRules();
+            gui.printInputRules();
     }
 
     @Override
@@ -124,8 +124,8 @@ public class ConsoleUI implements GameUI{
         }
 
         Action action = new UseItem(game, itemClass);
-        ActionResult result = game.playTurn(action);
-        printUseActionResult(result);
+        //ItemUseResult result = game.playTurn(action);
+        gui.printUseActionResult(null);
     }
 
     private void shootPlayer(Matcher matcher) {
@@ -142,9 +142,9 @@ public class ConsoleUI implements GameUI{
         }
 
         Player actualPlayer = game.getActualPlayer();
-        Action action = new Shoot(selfShoot, game);
-        ActionResult result = game.playTurn(action);
-        printShootResult(actualPlayer.getName(), selfShoot, result);
+        Action action = new Shoot(game, selfShoot);
+        //ItemUseResult result = game.playTurn(action);
+        gui.printShootResult(actualPlayer.getName(), selfShoot, null);
     }
 
     private boolean doubleOrNothing(){
@@ -164,9 +164,9 @@ public class ConsoleUI implements GameUI{
     }
 
     private void showGun(Gun gun) {
-        printRepeatedLineOf("*");
+        gui.printRepeatedLineOf("*");
         System.out.printf("Gun was reloaded: %d live around | %d blank%n", gun.getLiveBulletsCount(), gun.getBulletsCount() - gun.getLiveBulletsCount());
-        printRepeatedLineOf("*");
+        gui.printRepeatedLineOf("*");
     }
 
     private void printGameLogo(){
@@ -184,105 +184,5 @@ public class ConsoleUI implements GameUI{
         return input.equals("y") || input.equals("yes");
     }
 
-    private void printPlayerInfo(Player player) {
-        if (player == null)
-            throw new UnsupportedOperationException("Player is null");
 
-        System.out.println(player.getName().toUpperCase());
-        if(player instanceof Human){
-            if(player.getLifeCount() > 0)
-                System.out.println("\n  _---_\n" +
-                        " ( o_o ) \n" +
-                        " / >-< \\ \n");
-            else
-                System.out.println("\n  _---_\n" +
-                        " ( x_x ) \n" +
-                        " / >-< \\ \n");
-        }
-        else{
-            if(player.getLifeCount() > 0)
-                System.out.println("\n  /\\_/\\\n" +
-                        " ( o.o )\n" +
-                        " / >^< \\\n");
-            else
-                System.out.println("\n  /\\_/\\\n" +
-                        " ( x.x )\n" +
-                        " / >^<\\\n");
-        }
-        System.out.printf("Life count: %d\nItems:\n", player.getLifeCount());
-        System.out.println(String.join("\n", player.getItems().stream()
-                .map(Item::toString)
-                .toArray(String[]::new)));
-    }
-
-    private void printRepeatedLineOf(String string) {
-        System.out.println("\n" + string.repeat(40) + "\n");
-    }
-
-    private void printInputRules() {
-        System.out.print("* If you wanna use item type (u/use x) where x is an item to use\n"+
-                "c - cigarettes, h - handcuff, b -beer, s - saw, m - magnifying glass\n"+
-                "\n* If you wanna shoot yourself type (sh/shoot m), opponent (sh/shoot o)\n" +
-                "\nEnter your turn: ");
-    }
-
-    private void printUseActionResult(ActionResult result) {
-        switch (result){
-            case BULLET_WAS_BLANK:
-                System.out.println("Bullet was blank!");
-                break;
-            case BULLET_WAS_LIVE:
-                System.out.println("Bullet was live!");
-                break;
-            case USE_ITEM_SUCCESS:
-                System.out.println("You have successfully used the item!");
-                break;
-            case USE_ITEM_FAILED:
-                System.out.println("You have failed to use the item!");
-                break;
-            default:
-                throw new UnsupportedOperationException("Unsupported action result: " + result);
-        }
-    }
-
-    private void printShootResult(String shooter, boolean selfshoot, ActionResult result) {
-        String shooted = selfshoot ? "himself" : "opponent";
-
-        switch (result) {
-            case HIT_SUCCESS:
-                System.out.println(shooter + " shooted "+ shooted + " succesful");
-                break;
-            case HIT_FAILED:
-                System.out.println(shooter + " shooted " + shooted + " failure");
-                break;
-            default:
-                throw new UnsupportedOperationException("Unknown operation result: " + result);
-        }
-
-    }
-
-    private void printDealerActionResult(ActionResult actionResult) {
-        switch(actionResult){
-            case HIT_FAILED:
-                System.out.println("Dealer shoot failed");
-                break;
-            case HIT_SUCCESS:
-                System.out.println("Dealer shoot successful");
-                break;
-            case USE_ITEM_SUCCESS:
-                System.out.println("Dealer use item successful");
-                break;
-            case USE_ITEM_FAILED:
-                System.out.println("Dealer use item failed");
-                break;
-            case BULLET_WAS_LIVE:
-                System.out.println("Dealer bullet was live");
-                break;
-            case BULLET_WAS_BLANK:
-                System.out.println("Dealer bullet was blank");
-                break;
-            default:
-                break;
-        }
-    }
 }
