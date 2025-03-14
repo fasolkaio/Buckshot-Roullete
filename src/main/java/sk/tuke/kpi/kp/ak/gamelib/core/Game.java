@@ -18,47 +18,67 @@ public class Game {
     private Gun gun;
     @Getter @Setter
     private GameState gameState;
+    @Getter
+    private final GameMode gameMode;
+
     private Player firstPlayer;
     private Player secondPlayer;
-    @Getter
-    private final boolean singleGame;
 
+
+    //generate for P2P Mode
     public Game(String firstPlayerName, String secondPlayerName) {
         gameState = GameState.FIRST_PLAYER_TURN;
-        this.singleGame = false;
+        gameMode = GameMode.P2P;
         initRound(firstPlayerName, secondPlayerName);
     }
 
+    //generate for Single Mode
     public Game(String firstPlayerName) {
         gameState = GameState.FIRST_PLAYER_TURN;
-        this.singleGame = true;
+        gameMode = GameMode.Single;
         initRound(firstPlayerName, "Dealer");
     }
 
-    public void initRound(String firstPlayerName, String secondPlayerName){
-        int playersLifeCount = RandomGenerator.randomIntBetween(3, 5);
-        firstPlayer = new Human(firstPlayerName, playersLifeCount);
-        if(singleGame)
+    //generate for Testing Mode or B2B Mode
+    public Game(GameMode gameMode) {
+        gameState = GameState.FIRST_PLAYER_TURN;
+        this.gameMode = gameMode;
+        switch (gameMode) {
+            case B2B:
+                initRound("Dealer", "Dealer");
+                break;
+            case Testing:
+                initTestingRound();
+                break;
+            default:
+                throw new UnsupportedOperationException("Incorrect initialization of game");
+        }
+
+    }
+
+
+    private void initRound(String firstPlayerName, String secondPlayerName){
+        int playersLifeCount = RandomGenerator.randomIntBetween(2, 5);
+
+        if(gameMode != GameMode.B2B)
+            firstPlayer = new Human(firstPlayerName, playersLifeCount);
+        else
+            firstPlayer = new Dealer(secondPlayerName, playersLifeCount, this);
+
+        if(gameMode != GameMode.Single)
             secondPlayer = new Dealer(secondPlayerName, playersLifeCount, this);
         else
             secondPlayer = new Human(secondPlayerName, playersLifeCount);
+
         firstPlayer.addObserver(new HealthObserver(this));
         secondPlayer.addObserver(new HealthObserver(this));
+
         generateItems();
         reloadGun();
     }
 
     public void reinitRound(){
-        int playersLifeCount = RandomGenerator.randomIntBetween(3, 5);
-        firstPlayer = new Human(firstPlayer.getName(), playersLifeCount);
-        if(singleGame)
-            secondPlayer = new Dealer(secondPlayer.getName(), playersLifeCount, this);
-        else
-            secondPlayer = new Human(secondPlayer.getName(), playersLifeCount);
-        firstPlayer.addObserver(new HealthObserver(this));
-        secondPlayer.addObserver(new HealthObserver(this));
-        generateItems();
-        reloadGun();
+        initRound(firstPlayer.getName(), secondPlayer.getName());
     }
 
     public void generateItems(){
@@ -89,11 +109,14 @@ public class Game {
             return getActualPlayer().doTurn(action);
         else{
             getActualPlayer().setSkipTurn(false);
-            return new SkipTurnActionResult(getActualPlayer());
+            switchTurn();
+            return new SkipTurnActionResult(getNotActualPlayer());
         }
     }
 
     public void switchTurn(){
+        if(gameState.equals(GameState.ROUND_ENDED))
+            return;
         gameState = gameState == GameState.FIRST_PLAYER_TURN
                 ? GameState.SECOND_PLAYER_TURN
                 : GameState.FIRST_PLAYER_TURN;
@@ -109,7 +132,7 @@ public class Game {
     }
 
     public Player getActualPlayer() {
-        if (gameState == GameState.FIRST_PLAYER_TURN)
+        if (gameState == GameState.FIRST_PLAYER_TURN || gameState == GameState.ROUND_ENDED)
             return firstPlayer;
         else
             return secondPlayer;
@@ -122,7 +145,7 @@ public class Game {
             return secondPlayer;
     }
 
-    public boolean isBotTurn(){
+    public boolean isDealerTurn(){
         return getActualPlayer() instanceof Dealer;
     }
 
@@ -132,5 +155,29 @@ public class Game {
 
     public boolean isEnded(){
         return gameState.equals(GameState.GAME_ENDED);
+    }
+
+
+    private void initTestingRound() {
+        int playersLifeCount = 1;
+        firstPlayer = new Human("Tester", playersLifeCount);
+        secondPlayer = new Human("Dealer", playersLifeCount);
+        firstPlayer.addObserver(new HealthObserver(this));
+        secondPlayer.addObserver(new HealthObserver(this));
+        generateTestingItems();
+        gun = new Gun(2, 1);
+    }
+
+    private void generateTestingItems() {
+        firstPlayer.addItem(new Cigarettes());
+        firstPlayer.addItem(new Handcuff());
+        firstPlayer.addItem(new MagnifyingGlass());
+        firstPlayer.addItem(new Beer());
+        firstPlayer.addItem(new Saw());
+        secondPlayer.addItem(new Cigarettes());
+        secondPlayer.addItem(new Handcuff());
+        secondPlayer.addItem(new MagnifyingGlass());
+        secondPlayer.addItem(new Beer());
+        secondPlayer.addItem(new Saw());
     }
 }

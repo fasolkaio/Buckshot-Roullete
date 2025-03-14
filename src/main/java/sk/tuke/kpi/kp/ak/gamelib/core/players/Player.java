@@ -61,12 +61,10 @@ public abstract class Player {
         return true;
     }
 
-    public boolean addItem(Item item){
+    public void addItem(Item item){
         if(items.size() < itemsCapacity){
             items.add(item);
-            return true;
         }
-        return false;
     }
 
     public <I extends Item> ItemUseResult useItem(Class<I> itemClass, Game game) {

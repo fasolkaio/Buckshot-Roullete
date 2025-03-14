@@ -1,25 +1,27 @@
 package sk.tuke.kpi.kp.ak.gamelib.ui;
 
 import sk.tuke.kpi.kp.ak.gamelib.core.Game;
+import sk.tuke.kpi.kp.ak.gamelib.core.GameMode;
 import sk.tuke.kpi.kp.ak.gamelib.core.GameState;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Action;
-import sk.tuke.kpi.kp.ak.gamelib.core.actions.ActionResult;
-import sk.tuke.kpi.kp.ak.gamelib.core.items.ItemUseResult;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.Shoot;
 import sk.tuke.kpi.kp.ak.gamelib.core.actions.UseItem;
 import sk.tuke.kpi.kp.ak.gamelib.core.items.*;
-import sk.tuke.kpi.kp.ak.gamelib.core.players.Player;
-import sk.tuke.kpi.kp.ak.gamelib.core.weapon.Gun;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ConsoleUI implements GameUI{
+    private boolean firstRound;
+    private GameMode gameMode;
+
     private final Game game;
+
+    //input|output utilities
     private final ConsoleGUI gui;
     private final Scanner scanner;
-    private boolean firstRound;
+
     private final Pattern usePattern;
     private final Pattern shootPattern;
 
@@ -28,21 +30,30 @@ public class ConsoleUI implements GameUI{
         firstRound = true;
         usePattern = Pattern.compile("(u|use) ([bcmsh])");
         shootPattern = Pattern.compile("(sh|shoot) ([mo])");
-        printGameLogo();
-        boolean soloGame = isGameSolo();
-        if(soloGame){
-            game = new Game(askName());
+        gui = new ConsoleGUI();
+        gui.printGameLogo();
+        setGameMode();
+        switch(gameMode) {
+            case Single:
+                game = new Game(askName());
+                break;
+            case P2P:
+                game = new Game(askName(), askName());
+                break;
+            case Testing:
+                game = new Game(gameMode);
+                break;
+            case B2B:
+                game = new Game(gameMode);
+            default:
+                throw new IllegalArgumentException("Unsupported game mode " + gameMode);
         }
-        else{
-            game = new Game(askName(), askName());
-        }
-        gui = new ConsoleGUI(game);
     }
 
     @Override
     public void play() {
         if (game == null)
-            throw new UnsupportedOperationException("Game is null");
+            throw new NullPointerException("Game is null");
 
         while (!game.isEnded()){
             if(!firstRound)
@@ -54,45 +65,53 @@ public class ConsoleUI implements GameUI{
             while (!game.isRoundEnded()){
                 if(game.getGun().isEmpty()){
                     game.reloadGun();
+                    game.generateItems();
                     gui.showGun(game.getGun());
                 }
                 show();
                 handleInput();
+                System.out.println(game.getGameState().toString());
             }
             show();
+            gui.printWinner(game.getWinnerName());
 
-            if(!(game.isSingleGame() && doubleOrNothing())){
+            if(game.getGameMode() != GameMode.Single || !doubleOrNothing()){
                 game.setGameState(GameState.GAME_ENDED);
             }
         }
+
+        gui.printMassage("Thank you for playing!\n");
     }
 
 
     @Override
     public void show() {
         if (game == null)
-            throw new UnsupportedOperationException("Game is null");
+            throw new NullPointerException("Game is null");
+
         gui.printRepeatedLineOf("=");
 
         //print players
-        System.out.print("Turn of player: ");
+        gui.printMassage("Turn of player: ");
         gui.printPlayerInfo(game.getActualPlayer());
         gui.printRepeatedLineOf("-");
-        System.out.print("Another player: ");
+        gui.printMassage("Another player: ");
         gui.printPlayerInfo(game.getNotActualPlayer());
         gui.printRepeatedLineOf("-");
 
         //print input rules
-        if(!game.isBotTurn())
+        if(!game.isDealerTurn())
             gui.printInputRules();
     }
 
     @Override
     public void handleInput() {
         if (game == null)
-            throw new UnsupportedOperationException("Game is null");
+            throw new NullPointerException("Game is null");
+
         Action action = null;
-        if(!game.isBotTurn()){
+        //parse input when human player turn
+        if(!game.isDealerTurn() && !game.getActualPlayer().scipTurn()){
             String input = scanner.nextLine().trim().toLowerCase();
             Matcher matcherUse = usePattern.matcher(input);
             Matcher matcherShoot = shootPattern.matcher(input);
@@ -105,6 +124,11 @@ public class ConsoleUI implements GameUI{
                 System.out.println("Wrong input!");
                 return;
             }
+        }
+        //pare input when dealer player turn
+        if(game.isDealerTurn()){
+            gui.printMassage("Press enter to see Dealer turn");
+            scanner.nextLine();
         }
 
         gui.printActionResult(game.playTurn(action));
@@ -152,33 +176,38 @@ public class ConsoleUI implements GameUI{
     }
 
     private boolean doubleOrNothing(){
-        System.out.print("Double or nothing? (y/n) ");
+        gui.printMassage("Double or nothing? (y/n) ");
         String input = scanner.nextLine().toLowerCase();
 
         while(!input.equals("y") && !input.equals("n") && !input.equals("yes") && !input.equals("no")){
-            System.out.print("Double or nothing? (y/n) ");
+            gui.printMassage("Double or nothing? (y/n) ");
             input = scanner.nextLine().toLowerCase();
         }
         return input.equals("y") || input.equals("yes");
     }
 
     private String askName(){
-        System.out.print("Please enter your name: ");
+        gui.printMassage("Please enter your name: ");
         return scanner.nextLine();
     }
 
-    private boolean isGameSolo(){
-        System.out.print("Do you wanna play solo? (y/n) ");
+    private void setGameMode(){
+        gui.printMassage("Do you wanna play solo? (y/n) ");
         String input = scanner.nextLine().toLowerCase();
 
-        while(!input.equals("y") && !input.equals("n") && !input.equals("yes") && !input.equals("no")){
-            System.out.print("Do you wanna play solo? (y/n) ");
+        while(!input.equals("y") && !input.equals("n") && !input.equals("yes") && !input.equals("no") && !input.equals("t") && !input.equals("b")){
+            gui.printMassage("Do you wanna play solo? (y/n) ");
             input = scanner.nextLine().toLowerCase();
         }
-        return input.equals("y") || input.equals("yes");
-    }
 
-    private void printGameLogo(){
-        System.out.println("Welcome to BuckShot Roulette!");
+        if(input.equals("y") || input.equals("yes")){
+            gameMode = GameMode.Single;
+        }
+        else if(input.equals("n") || input.equals("no")){
+            gameMode = GameMode.P2P;
+        }
+        else{
+            gameMode = GameMode.Testing;
+        }
     }
 }

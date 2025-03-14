@@ -25,6 +25,15 @@ public class Gun {
         generateBullets();
     }
 
+    //creating gun for testing
+    public Gun(int bulletsCount, int liveBulletsCount) {
+        bullets = new ArrayList<>();
+        damage = 1;
+        this.bulletsCount = bulletsCount;
+        this.liveBulletsCount = liveBulletsCount;
+        generateBullets();
+    }
+
     private void generateBullets() {
         for (int i = 0; i < bulletsCount; i++) {
             bullets.add(new Bullet(true));

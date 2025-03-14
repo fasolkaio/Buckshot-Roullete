@@ -11,7 +11,6 @@ import sk.tuke.kpi.kp.ak.gamelib.core.weapon.Gun;
 
 @AllArgsConstructor
 public class ConsoleGUI {
-    Game game;
 
     public void printPlayerInfo(Player player) {
         if (player == null)
@@ -108,4 +107,18 @@ public class ConsoleGUI {
                 "\nEnter your turn: ");
     }
 
+    public void printWinner(String winnerName) {
+        printRepeatedLineOf("*");
+        System.out.println("\nPlayer " + winnerName.toUpperCase() + " wins!");
+        printRepeatedLineOf("*");
+    }
+
+    public void printMassage(String message) {
+        System.out.print(message);
+    }
+
+
+    public void printGameLogo(){
+        System.out.println("Welcome to BuckShot Roulette!");
+    }
 }
