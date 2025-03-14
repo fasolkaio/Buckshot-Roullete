@@ -53,9 +53,7 @@ public class Game {
             default:
                 throw new UnsupportedOperationException("Incorrect initialization of game");
         }
-
     }
-
 
     private void initRound(String firstPlayerName, String secondPlayerName){
         int playersLifeCount = RandomGenerator.randomIntBetween(2, 5);
@@ -65,7 +63,7 @@ public class Game {
         else
             firstPlayer = new Dealer(secondPlayerName, playersLifeCount, this);
 
-        if(gameMode != GameMode.Single)
+        if(gameMode != GameMode.P2P)
             secondPlayer = new Dealer(secondPlayerName, playersLifeCount, this);
         else
             secondPlayer = new Human(secondPlayerName, playersLifeCount);
@@ -78,6 +76,8 @@ public class Game {
     }
 
     public void reinitRound(){
+        gun = null;
+        gameState = GameState.FIRST_PLAYER_TURN;
         initRound(firstPlayer.getName(), secondPlayer.getName());
     }
 
@@ -161,7 +161,7 @@ public class Game {
     private void initTestingRound() {
         int playersLifeCount = 1;
         firstPlayer = new Human("Tester", playersLifeCount);
-        secondPlayer = new Human("Dealer", playersLifeCount);
+        secondPlayer = new Dealer("Dealer", playersLifeCount, this);
         firstPlayer.addObserver(new HealthObserver(this));
         secondPlayer.addObserver(new HealthObserver(this));
         generateTestingItems();

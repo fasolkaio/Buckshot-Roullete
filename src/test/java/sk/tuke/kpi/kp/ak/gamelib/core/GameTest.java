@@ -14,16 +14,39 @@ public class GameTest {
         assertEquals(GameState.FIRST_PLAYER_TURN, game.getGameState());
         assertInstanceOf(Human.class, game.getActualPlayer());
         assertInstanceOf(Dealer.class, game.getNotActualPlayer());
+        assertEquals(GameMode.Single, game.getGameMode());
     }
 
     @Test
-    public void testMultiGameCreated() {
+    public void testP2PGameCreated() {
         Game game = new Game("first", "second");
         assertNotNull(game.getGun());
         assertEquals(GameState.FIRST_PLAYER_TURN, game.getGameState());
         assertInstanceOf(Human.class, game.getActualPlayer());
         assertInstanceOf(Human.class, game.getNotActualPlayer());
+        assertEquals(GameMode.P2P, game.getGameMode());
     }
+
+    @Test
+    public void testB2BGameCreated() {
+        Game game = new Game(GameMode.B2B);
+        assertNotNull(game.getGun());
+        assertEquals(GameState.FIRST_PLAYER_TURN, game.getGameState());
+        assertInstanceOf(Dealer.class, game.getActualPlayer());
+        assertInstanceOf(Dealer.class, game.getNotActualPlayer());
+        assertEquals(GameMode.B2B, game.getGameMode());
+    }
+
+    @Test
+    public void testTestingGameCreated() {
+        Game game = new Game(GameMode.Testing);
+        assertNotNull(game.getGun());
+        assertEquals(GameState.FIRST_PLAYER_TURN, game.getGameState());
+        assertInstanceOf(Human.class, game.getActualPlayer());
+        assertInstanceOf(Dealer.class, game.getNotActualPlayer());
+        assertEquals(GameMode.Testing, game.getGameMode());
+    }
+
 
     @Test
     public void testGetPlayer(){

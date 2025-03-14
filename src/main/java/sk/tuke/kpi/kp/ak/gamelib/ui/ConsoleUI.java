@@ -12,10 +12,10 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static sk.tuke.kpi.kp.ak.gamelib.core.GameMode.*;
+
 public class ConsoleUI implements GameUI{
     private boolean firstRound;
-    private GameMode gameMode;
-
     private final Game game;
 
     //input|output utilities
@@ -32,7 +32,7 @@ public class ConsoleUI implements GameUI{
         shootPattern = Pattern.compile("(sh|shoot) ([mo])");
         gui = new ConsoleGUI();
         gui.printGameLogo();
-        setGameMode();
+        GameMode gameMode = getGameMode();
         switch(gameMode) {
             case Single:
                 game = new Game(askName());
@@ -40,13 +40,8 @@ public class ConsoleUI implements GameUI{
             case P2P:
                 game = new Game(askName(), askName());
                 break;
-            case Testing:
-                game = new Game(gameMode);
-                break;
-            case B2B:
-                game = new Game(gameMode);
             default:
-                throw new IllegalArgumentException("Unsupported game mode " + gameMode);
+                game = new Game(gameMode);
         }
     }
 
@@ -70,12 +65,14 @@ public class ConsoleUI implements GameUI{
                 }
                 show();
                 handleInput();
-                System.out.println(game.getGameState().toString());
             }
             show();
+
             gui.printWinner(game.getWinnerName());
 
-            if(game.getGameMode() != GameMode.Single || !doubleOrNothing()){
+            if(game.getGameMode()  == P2P
+                    || game.getGameMode() == GameMode.B2B
+                    || !doubleOrNothing()){
                 game.setGameState(GameState.GAME_ENDED);
             }
         }
@@ -191,7 +188,7 @@ public class ConsoleUI implements GameUI{
         return scanner.nextLine();
     }
 
-    private void setGameMode(){
+    private GameMode getGameMode(){
         gui.printMassage("Do you wanna play solo? (y/n) ");
         String input = scanner.nextLine().toLowerCase();
 
@@ -200,14 +197,17 @@ public class ConsoleUI implements GameUI{
             input = scanner.nextLine().toLowerCase();
         }
 
-        if(input.equals("y") || input.equals("yes")){
-            gameMode = GameMode.Single;
-        }
-        else if(input.equals("n") || input.equals("no")){
-            gameMode = GameMode.P2P;
-        }
-        else{
-            gameMode = GameMode.Testing;
+        switch (input) {
+            case "y":
+            case "yes":
+                return Single;
+            case "n":
+            case "no":
+                return P2P;
+            case "b":
+                return B2B;
+            default:
+                return Testing;
         }
     }
 }
