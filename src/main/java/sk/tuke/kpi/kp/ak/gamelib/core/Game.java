@@ -45,7 +45,7 @@ public class Game {
         this.gameMode = gameMode;
         switch (gameMode) {
             case B2B:
-                initRound("Dealer", "Dealer");
+                initRound("Dealer 1", "Dealer 2");
                 break;
             case Testing:
                 initTestingRound();

@@ -35,7 +35,7 @@ public class ConsoleGUI {
             else
                 System.out.println("\n  /\\_/\\\n" +
                         " ( x.x )\n" +
-                        " / >^<\\\n");
+                        " / >^< \\\n");
         }
         System.out.printf("Life count: %d\nItems:\n", player.getLifeCount());
         System.out.println(String.join("\n", player.getItems().stream()
