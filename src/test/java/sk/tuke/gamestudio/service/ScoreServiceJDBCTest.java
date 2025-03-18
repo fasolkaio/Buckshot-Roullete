@@ -11,7 +11,7 @@ public class ScoreServiceJDBCTest {
     private ScoreServiceJDBC scoreService = new ScoreServiceJDBC();
 
     @Test
-    void testAddScore() {
+    public void testAddScore() {
         scoreService.reset();
         scoreService.addScore(new Score("buckshot roulette", "lina", 5000, new Date()));
         List<Score> scores =  scoreService.getTopScores("buckshot roulette");
@@ -23,7 +23,7 @@ public class ScoreServiceJDBCTest {
     }
 
     @Test
-    void testGetTopScoresOrder() {
+    public void testGetTopScoresOrder() {
         scoreService.reset();
 
         scoreService.addScore(new Score("buckshot roulette", "pl1", 5000, new Date()));
@@ -57,7 +57,7 @@ public class ScoreServiceJDBCTest {
     }
 
     @Test
-    void testGetTopScoresCount(){
+    public void testGetTopScoresCount(){
         scoreService.reset();
 
         for(int i = 0; i < 20; i++){

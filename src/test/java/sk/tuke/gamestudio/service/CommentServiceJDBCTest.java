@@ -8,11 +8,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CommentServiceJDBCTest {
+public class CommentServiceJDBCTest {
     private final CommentService service = new CommentServiceJDBC();
 
     @Test
-    void testAddComment() {
+    public void testAddComment() {
         service.reset();
         service.addComment(new Comment("buckshot roulette", "lina", "Cool game!", new Date()));
         List<Comment> comments =  service.getComments("buckshot roulette");
@@ -24,7 +24,7 @@ class CommentServiceJDBCTest {
     }
 
     @Test
-    void testGetComments() {
+    public void testGetComments() {
         service.reset();
 
         service.addComment(new Comment("buckshot roulette", "pl1", "com1", new Date()));
@@ -66,7 +66,7 @@ class CommentServiceJDBCTest {
     }
 
     @Test
-    void testReset() {
+    public void testReset() {
         service.reset();
         List<Comment> comments = service.getComments("buckshot roulette");
         assertEquals(0, comments.size());

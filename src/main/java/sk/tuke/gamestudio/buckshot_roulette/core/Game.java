@@ -22,7 +22,7 @@ public class Game {
     @Getter @Setter
     private GameState gameState = GameState.FIRST_PLAYER_TURN;
     @Getter
-    private int score = 5000;
+    private int score = 8000;
 
     @Getter
     private final GameMode gameMode;

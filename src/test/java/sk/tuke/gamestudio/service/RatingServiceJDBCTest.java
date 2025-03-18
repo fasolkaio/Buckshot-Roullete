@@ -9,11 +9,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RatingServiceJDBCTest {
+public class RatingServiceJDBCTest {
     RatingService service = new RatingServiceJDBC();
 
     @Test
-    void setRating() {
+    public void setRating() {
         service.reset();
         service.setRating(new Rating("buckshot roulette", "lina", 5, new Date()));
         assertEquals(5, service.getAverageRating("buckshot roulette"));
@@ -23,7 +23,7 @@ class RatingServiceJDBCTest {
     }
 
     @Test
-    void getAverageRating() {
+    public void getAverageRating() {
         service.reset();
         assertEquals(0, service.getAverageRating("buckshot roulette"));
 
@@ -38,7 +38,7 @@ class RatingServiceJDBCTest {
     }
 
     @Test
-    void getRating() {
+    public void getRating() {
         service.reset();
         service.setRating(new Rating("buckshot roulette", "lina", 5, new Date()));
         service.setRating(new Rating("mines", "player", 3, new Date()));
@@ -50,7 +50,7 @@ class RatingServiceJDBCTest {
     }
 
     @Test
-    void testReset() {
+    public void testReset() {
         service.reset();
         assertEquals(0, service.getAverageRating("buckshot roulette"));
         service.setRating(new Rating("buckshot roulette", "lina", 5, new Date()));

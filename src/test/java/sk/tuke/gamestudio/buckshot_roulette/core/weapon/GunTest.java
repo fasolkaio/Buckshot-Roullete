@@ -5,6 +5,7 @@ import sk.tuke.gamestudio.buckshot_roulette.core.players.Human;
 import sk.tuke.gamestudio.buckshot_roulette.core.players.Player;
 import sk.tuke.gamestudio.buckshot_roulette.core.weapon.Gun;
 
+import static java.lang.Math.round;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GunTest {
@@ -15,7 +16,7 @@ public class GunTest {
             return gun.getBulletsCount() >= 2
                     && gun.getLiveBulletsCount() <= 8
                     && gun.getLiveBulletsCount() >= 1
-                    && gun.getLiveBulletsCount() <= (gun.getBulletsCount() - 1);
+                    && gun.getLiveBulletsCount() <= ((int) round(gun.getBulletsCount()) * 0.7);
         }) ;
     }
 
@@ -83,13 +84,4 @@ public class GunTest {
         else
             assertEquals(5, player.getLifeCount());
     }
-
-    @Test
-    public void manualTestGeneration(){
-        for(int i = 0; i < 10; i++){
-            Gun gun = new Gun();
-            System.out.println(gun.toString());
-        }
-    }
-
 }

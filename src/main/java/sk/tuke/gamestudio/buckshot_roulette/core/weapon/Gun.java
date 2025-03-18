@@ -97,6 +97,6 @@ public class Gun {
 
     @Override
     public String toString() {
-        return "Bullets count: " + bulletsCount + ", live bullets count: " + liveBulletsCount + ", blank bullets: " + (bulletsCount - liveBulletsCount);
+        return "Live bullets count: " + liveBulletsCount + ", blank bullets: " + (bulletsCount - liveBulletsCount);
     }
 }

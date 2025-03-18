@@ -17,7 +17,9 @@ public class ShootTest {
     public void testShotOpponent(){
         Game game = new Game("first player", "second player");
         Action shoot = new Shoot(game, false );
-        shoot.execute();
+        ShootActionResult actionResult = (ShootActionResult)shoot.execute();
+        assertFalse(actionResult.isSelfShoot());
+        assertEquals(game.getNotActualPlayer(), actionResult.getPlayer());
         assertEquals(GameState.SECOND_PLAYER_TURN,game.getGameState());
     }
 
@@ -26,9 +28,14 @@ public class ShootTest {
         Game game = new Game("first player", "second player");
         Action shoot = new Shoot(game, true);
         ShootActionResult actionResult = (ShootActionResult)shoot.execute();
-        if(actionResult.isShootResult() || !actionResult.isSelfShoot())
-            assertEquals(GameState.SECOND_PLAYER_TURN,game.getGameState());
-        else
-            assertEquals(GameState.FIRST_PLAYER_TURN,game.getGameState());
+        assertTrue(actionResult.isSelfShoot());
+        if(actionResult.isShootResult()) {
+            assertEquals(GameState.SECOND_PLAYER_TURN, game.getGameState());
+            assertEquals(game.getNotActualPlayer(), actionResult.getPlayer());
+        }
+        else {
+            assertEquals(GameState.FIRST_PLAYER_TURN, game.getGameState());
+            assertEquals(game.getActualPlayer(), actionResult.getPlayer());
+        }
     }
 }

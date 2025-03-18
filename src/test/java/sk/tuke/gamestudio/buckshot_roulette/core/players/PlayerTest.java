@@ -10,6 +10,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTest {
     @Test
+    public void testHeal() {
+        Player player = new Human("player", 5);
+        player.getDamage(1);
+        assertEquals(4, player.getLifeCount());
+        player.heal();
+        assertEquals(5, player.getLifeCount());
+        player.heal();
+        assertEquals(5, player.getLifeCount());
+    }
+
+    @Test
     public void testGetDamage() {
         Player player = new Human("player", 5);
         player.getDamage(1);
@@ -21,14 +32,24 @@ public class PlayerTest {
     }
 
     @Test
-    public void testHeal() {
+    public void testCuff() {
         Player player = new Human("player", 5);
-        player.getDamage(1);
-        assertEquals(4, player.getLifeCount());
-        player.heal();
-        assertEquals(5, player.getLifeCount());
-        player.heal();
-        assertEquals(5, player.getLifeCount());
+        assertFalse(player.scipTurn());
+        assertTrue(player.cuff());
+        assertTrue(player.scipTurn());
+        assertFalse(player.cuff());
+        assertTrue(player.scipTurn());
+    }
+
+    @Test
+    public void testAddItem(){
+        Player player = new Human("player", 5);
+        for(int i = 0; i < 8; i ++){
+            player.addItem(new Beer());
+        }
+        assertEquals(8, player.getItems().size());
+        player.addItem(new Beer());
+        assertEquals(8, player.getItems().size());
     }
 
     @Test

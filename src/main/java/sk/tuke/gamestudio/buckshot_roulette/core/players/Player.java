@@ -97,7 +97,7 @@ public abstract class Player {
     public boolean scipTurn(){
         return skipTurn;
     }
-    public  void addObserver(GameObserver observer){
+    public void addObserver(GameObserver observer){
         observers.add(observer);
     }
 }
