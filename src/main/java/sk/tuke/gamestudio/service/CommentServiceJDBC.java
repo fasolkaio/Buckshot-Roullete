@@ -20,10 +20,8 @@ public class CommentServiceJDBC implements CommentService {
     @Override
     public void addComment(Comment comment) throws CommentException {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             Statement statement = connection.createStatement();
              PreparedStatement insertStatement = connection.prepareStatement(INSERT)
         ) {
-            statement.executeUpdate(CREATE);
             insertStatement.setString(1, comment.getGame());
             insertStatement.setString(2, comment.getPlayer());
             insertStatement.setString(3, comment.getComment());
@@ -37,10 +35,8 @@ public class CommentServiceJDBC implements CommentService {
     @Override
     public List<Comment> getComments(String game) throws CommentException {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             Statement  statement = connection.createStatement();
              PreparedStatement selectStatement = connection.prepareStatement(SELECT);
         ) {
-            statement.executeUpdate(CREATE);
             selectStatement.setString(1, game);
             try (ResultSet rs = selectStatement.executeQuery()) {
                 List<Comment> comments = new ArrayList<>();
@@ -50,7 +46,7 @@ public class CommentServiceJDBC implements CommentService {
                 return comments;
             }
         } catch (SQLException e) {
-            throw new ScoreException("Problem selecting score", e);
+            throw new CommentException("Problem selecting score", e);
         }
     }
 
@@ -59,7 +55,6 @@ public class CommentServiceJDBC implements CommentService {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement statement = connection.createStatement();
         ) {
-            statement.executeUpdate(CREATE);
             statement.executeUpdate(DELETE);
         } catch (SQLException e) {
             throw new CommentException("Problem deleting comment", e);
