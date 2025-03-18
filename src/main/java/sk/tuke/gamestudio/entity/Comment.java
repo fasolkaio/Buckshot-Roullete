@@ -22,7 +22,7 @@ public class Comment {
                 "game='" + game + '\'' +
                 ", player='" + player + '\'' +
                 ", comment=" + comment +
-                ", commentionOn=" + commentedOn +
+                ", commentedOn=" + commentedOn +
                 '}';
     }
 }

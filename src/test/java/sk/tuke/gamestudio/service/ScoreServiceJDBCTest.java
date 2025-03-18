@@ -11,13 +11,6 @@ public class ScoreServiceJDBCTest {
     private ScoreServiceJDBC scoreService = new ScoreServiceJDBC();
 
     @Test
-    public void testReset() {
-        scoreService.reset();
-        List<Score> scores = scoreService.getTopScores("buckshot roulette");
-        assertEquals(scores.size(), 0);
-    }
-
-    @Test
     void testAddScore() {
         scoreService.reset();
         scoreService.addScore(new Score("buckshot roulette", "lina", 5000, new Date()));
@@ -30,7 +23,7 @@ public class ScoreServiceJDBCTest {
     }
 
     @Test
-    void testGetTopScores() {
+    void testGetTopScoresOrder() {
         scoreService.reset();
 
         scoreService.addScore(new Score("buckshot roulette", "pl1", 5000, new Date()));
@@ -63,4 +56,23 @@ public class ScoreServiceJDBCTest {
         assertEquals(300, score.getPoints());
     }
 
+    @Test
+    void testGetTopScoresCount(){
+        scoreService.reset();
+
+        for(int i = 0; i < 20; i++){
+            scoreService.addScore(new Score("buckshot roulette", "player", 5000, new Date()));
+
+        }
+
+        List<Score> scores =  scoreService.getTopScores("buckshot roulette");
+        assertEquals(10, scores.size());
+    }
+
+    @Test
+    public void testReset() {
+        scoreService.reset();
+        List<Score> scores = scoreService.getTopScores("buckshot roulette");
+        assertEquals(0, scores.size());
+    }
 }
