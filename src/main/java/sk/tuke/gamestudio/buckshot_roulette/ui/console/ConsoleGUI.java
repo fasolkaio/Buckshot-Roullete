@@ -18,57 +18,67 @@ import java.util.List;
 @AllArgsConstructor
 public class ConsoleGUI {
 
+    public static final String RESET = "\u001B[0m";
+    public static final String RED = "\u001B[31m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String YELLOW = "\u001B[33m";
+    public static final String BLUE = "\u001B[34m";
+
     private void displayGameLogo(){
-        System.out.println("Welcome to BuckShot Roulette!");
+        System.out.println(BLUE + "Welcome to BuckShot Roulette!" + RESET);
     }
 
     public void displayMenu(){
         displayGameLogo();
-        System.out.print("\nMENU:\n" +
+        System.out.print( YELLOW + "\nMENU:\n" + RESET +
                 "Play\n" +
                 "Comment\n" +
                 "Rate\n" +
                 "Exit\n" +
-                "\nEnter command: ");
+                BLUE + "\nEnter command: " + RESET);
     }
 
     public void displayGun(Gun gun) {
         displayRepeatedLineOf("*");
-        System.out.printf("Gun was reloaded: %d live around | %d blank%n", gun.getLiveBulletsCount(), gun.getBulletsCount() - gun.getLiveBulletsCount());
+        System.out.printf("Gun was reloaded: " +
+                RED +"%d live around" + RESET +
+                " | " +
+                GREEN + "%d blank%n" + RESET,
+                gun.getLiveBulletsCount(), gun.getBulletsCount() - gun.getLiveBulletsCount());
         displayRepeatedLineOf("*");
     }
 
     public void displayComments(List<Comment> comments) {
         comments.forEach(comment -> {
             displayRepeatedLineOf("-");
-            System.out.println("(" + comment.getCommentedOn().toString() + ") " + comment.getPlayer() + ":\n" + comment.getComment());
+            System.out.println(BLUE + "(" + comment.getCommentedOn().toString() + ") " + RESET + GREEN + comment.getPlayer() + RESET + ":\n" + comment.getComment());
             displayRepeatedLineOf("-");
         });
     }
 
     public void displayTopScores(List<Score> topScores) {
-        System.out.println("\nTOP SCORES:");
+        System.out.println(YELLOW + "\nTOP SCORES:" + RESET);
         topScores.forEach(score -> {
-            System.out.println("(" + score.getPlayedOn().toString() + ") " + score.getPlayer() + ": " + score.getPoints());
+            System.out.println(BLUE + "(" + score.getPlayedOn().toString() + ") " + RESET + YELLOW + score.getPlayer() + ": " + score.getPoints() + RESET);
         });
     }
 
     public void displayInputRules() {
-        System.out.print("* If you wanna use item type (u/use x) where x is an item to use\n"+
+        System.out.print(BLUE + "* If you wanna use item type (u/use x) where x is an item to use\n"+
                 "c - cigarettes, h - handcuff, b -beer, s - saw, m - magnifying glass\n"+
                 "\n* If you wanna shoot yourself type (sh/shoot m), opponent (sh/shoot o)\n" +
-                "\nEnter your turn: ");
+                "\nEnter your turn: " + RESET);
     }
 
     public void displayCommentRules(){
-        System.out.println("* Type (comment) to add comment or " +
+        System.out.println(BLUE + "* Type (comment) to add comment or " +
                 "type (< | >) to scroll comment list or " +
-                "type (exit) to exit *");
+                "type (exit) to exit *" + RESET);
     }
 
     public void displayRatingRules() {
-        System.out.println("* Type (rate) to rate game or " +
-                "type (exit) to exit *");
+        System.out.println(BLUE + "* Type (rate) to rate game or " +
+                "type (exit) to exit *" + RESET);
     }
 
     public void displayActionResult(ActionResult actionResult) {
@@ -92,27 +102,27 @@ public class ConsoleGUI {
         String itemName = actionResult.getItemClass().getSimpleName().toLowerCase();
 
         if(actionResult.getItemUseResult() == ItemUseResult.ERROR) {
-            System.out.println("Error in using item: " + itemName);
+            System.out.println(RED + "Error in using item: " + itemName + RESET);
             return;
         }
 
         if(actionResult.getItemUseResult() == ItemUseResult.USE_ITEM_FAILED){
-            System.out.println("Player " + playerName + " can't use " + itemName);
+            System.out.println(RED + "Player " + playerName + " can't use " + itemName + RESET);
             return;
         }
 
-        System.out.println("Player " + playerName + " used " + itemName + " successfully");
+        System.out.println(GREEN + "Player " + playerName + " used " + itemName + " successfully" + RESET);
         if(actionResult.getItemUseResult() == ItemUseResult.BULLET_WAS_BLANK){
-            System.out.println("Bullet was blank");
+            System.out.println(GREEN + "Bullet was blank" + RESET);
         }
         else if(actionResult.getItemUseResult() == ItemUseResult.BULLET_WAS_LIVE){
-            System.out.println("Bullet was live");
+            System.out.println(RED + "Bullet was live"+ RESET);
         }
     }
 
     private void displayShootActionResult(ShootActionResult actionResult) {
         String playerName = actionResult.getPlayer().getName().toUpperCase();
-        String status = actionResult.isShootResult() ? " hit " : " missed a shot at ";
+        String status = actionResult.isShootResult() ? (RED + " hit " + RESET) : (GREEN + " missed a shot at " + RESET);
         String who = actionResult.isSelfShoot() ? "himself" : "the opponent";
 
         System.out.println("Player " + playerName  + status + who);
@@ -120,7 +130,7 @@ public class ConsoleGUI {
 
     public void displayWinner(String winnerName) {
         displayRepeatedLineOf("*");
-        System.out.println("\nPlayer " + winnerName.toUpperCase() + " wins!");
+        System.out.println(YELLOW + "\nPlayer " + winnerName.toUpperCase() + " wins!" + RESET);
         displayRepeatedLineOf("*");
     }
 
@@ -131,28 +141,30 @@ public class ConsoleGUI {
         System.out.println(player.getName().toUpperCase());
         if(player instanceof Human){
             if(player.getLifeCount() > 0)
-                System.out.println("\n  _---_\n" +
+                System.out.println(GREEN +"\n  _---_\n" +
                         " ( o_o ) \n" +
-                        " / >-< \\ \n");
+                        " / >-< \\ \n" + RESET);
             else
-                System.out.println("\n  _---_\n" +
+                System.out.println(BLUE + "\n  _---_\n" +
                         " ( x_x ) \n" +
-                        " / >-< \\ \n");
+                        " / >-< \\ \n" + GREEN);
         }
         else{
             if(player.getLifeCount() > 0)
-                System.out.println("\n  /\\_/\\\n" +
+                System.out.println(RED + "\n  /\\_/\\\n" +
                         " ( o.o )\n" +
-                        " / >^< \\\n");
+                        " / >^< \\\n" + RESET);
             else
-                System.out.println("\n  /\\_/\\\n" +
+                System.out.println(BLUE + "\n  /\\_/\\\n" +
                         " ( x.x )\n" +
-                        " / >^< \\\n");
+                        " / >^< \\\n" + RESET);
         }
-        System.out.printf("Life count: %d\nItems:\n", player.getLifeCount());
-        System.out.println(String.join("\n", player.getItems().stream()
+        System.out.printf("Life count: " +
+                RED + "%d" + RESET +
+                "\nItems:\n", player.getLifeCount());
+        System.out.println(YELLOW + String.join("\n", player.getItems().stream()
                 .map(Item::toString)
-                .toArray(String[]::new)));
+                .toArray(String[]::new)) + RESET);
     }
 
     public void displayRepeatedLineOf(String string) {

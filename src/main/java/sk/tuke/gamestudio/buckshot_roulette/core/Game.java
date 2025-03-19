@@ -68,7 +68,7 @@ public class Game {
         if(gameMode != GameMode.B2B)
             firstPlayer = new Human(firstPlayerName, playersLifeCount);
         else
-            firstPlayer = new Dealer(secondPlayerName, playersLifeCount, this);
+            firstPlayer = new Dealer(firstPlayerName, playersLifeCount, this);
 
         if(gameMode != GameMode.P2P)
             secondPlayer = new Dealer(secondPlayerName, playersLifeCount, this);
