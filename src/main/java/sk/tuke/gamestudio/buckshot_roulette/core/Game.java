@@ -16,6 +16,9 @@ import sk.tuke.gamestudio.buckshot_roulette.core.players.Player;
 import sk.tuke.gamestudio.buckshot_roulette.core.utilities.RandomGenerator;
 import sk.tuke.gamestudio.buckshot_roulette.core.weapon.Gun;
 
+import static sk.tuke.gamestudio.buckshot_roulette.core.GameMode.Single;
+import static sk.tuke.gamestudio.buckshot_roulette.core.GameMode.Testing;
+
 public class Game {
     @Getter
     private Gun gun;
@@ -149,6 +152,13 @@ public class Game {
             return secondPlayer;
     }
 
+    public Player getHumanPlayer() {
+        if(singleMod())
+            return firstPlayer;
+        else
+            return null;
+    }
+
     //specific getters
     public String getWinnerName(){
         if(firstPlayer.getLifeCount() == 0)
@@ -158,12 +168,6 @@ public class Game {
         else
             return null;
     }
-
-//    public Score getFinalScore(){
-//        if(gameMode == GameMode.Single || gameMode == GameMode.Testing)
-//            return new Score(firstPlayer.getName(), score, new Date());
-//        return null;
-//    }
 
     public boolean isDealerTurn(){
         return getActualPlayer() instanceof Dealer;
@@ -179,6 +183,10 @@ public class Game {
 
     public boolean continueGame(){
         return (gameMode.equals(GameMode.Single) || gameMode.equals(GameMode.Testing)) && firstPlayer.getLifeCount() != 0;
+    }
+
+    public  boolean singleMod(){
+        return gameMode == Single || gameMode == Testing;
     }
 
     //specific setters

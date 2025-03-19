@@ -1,86 +1,79 @@
 package sk.tuke.gamestudio.buckshot_roulette.ui;
 
 import sk.tuke.gamestudio.buckshot_roulette.core.Game;
-import sk.tuke.gamestudio.buckshot_roulette.core.GameMode;
 import sk.tuke.gamestudio.buckshot_roulette.core.GameState;
 import sk.tuke.gamestudio.buckshot_roulette.core.actions.Action;
 import sk.tuke.gamestudio.buckshot_roulette.core.actions.Shoot;
 import sk.tuke.gamestudio.buckshot_roulette.core.actions.UseItem;
 import sk.tuke.gamestudio.buckshot_roulette.core.items.*;
+import sk.tuke.gamestudio.buckshot_roulette.core.players.Player;
+import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.service.*;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static sk.tuke.gamestudio.buckshot_roulette.core.GameMode.*;
+public class ConsoleGameUI implements GameUI{
+    private Game game;
+    private boolean firstRound = true;
 
-public class ConsoleUI implements GameUI{
-    private boolean firstRound;
-    private final Game game;
-
-    //input|output utilities
+    //output/input utilities
     private final ConsoleGUI gui;
     private final Scanner scanner;
 
+    //services
+    private static final ScoreService scoreService = new ScoreServiceJDBC();
+
+    //command patterns
     private final Pattern usePattern;
     private final Pattern shootPattern;
 
-    public ConsoleUI() {
-        scanner = new Scanner(System.in);
-        firstRound = true;
-        usePattern = Pattern.compile("(u|use) ([bcmsh])");
-        shootPattern = Pattern.compile("(sh|shoot) ([mo])");
-        gui = new ConsoleGUI();
-        gui.printGameLogo();
-        GameMode gameMode = getGameMode();
-        switch(gameMode) {
-            case Single:
-                game = new Game(askName());
-                break;
-            case P2P:
-                game = new Game(askName(), askName());
-                break;
-            default:
-                game = new Game(gameMode);
-        }
+    public ConsoleGameUI(Scanner scanner, ConsoleGUI gui) {
+        usePattern = Pattern.compile("^(u|use) ([bcmsh])");
+        shootPattern = Pattern.compile("^(sh|shoot) ([mo])");
+        this.scanner = scanner;
+        this.gui = gui;
     }
 
     @Override
-    public void play() {
+    public void play(Game game) {
         if (game == null)
             throw new NullPointerException("Game is null");
+        this.game = game;
 
         while (!game.isEnded()){
             if(!firstRound)
                 game.reinitRound();
             firstRound = false;
 
-            gui.showGun(game.getGun());
+            gui.displayGun(game.getGun());
 
             while (!game.isRoundEnded()){
                 if(game.getGun().isEmpty()){
                     game.reloadGun();
                     game.generateItems();
-                    gui.showGun(game.getGun());
+                    gui.displayGun(game.getGun());
                 }
                 show();
                 handleInput();
             }
             show();
 
-            gui.printWinner(game.getWinnerName());
+            gui.displayWinner(game.getWinnerName());
 
-
-            if(!game.continueGame()){
+            if(!game.singleMod() || game.getHumanPlayer().getLifeCount() == 0){
                 game.setGameState(GameState.GAME_ENDED);
             }
             else{
                 doubleOrNothing();
             }
-
         }
-        showScore();
-        gui.printMassage("Thank you for playing!\n");
+
+        showTotalScore();
+        gui.displayLine("Thank you for playing!");
     }
 
     @Override
@@ -88,25 +81,22 @@ public class ConsoleUI implements GameUI{
         if (game == null)
             throw new NullPointerException("Game is null");
 
-        gui.printRepeatedLineOf("=");
-        showScore();
+        gui.displayRepeatedLineOf("=");
+
+        if(game.singleMod())
+            gui.displayMassage("Your score: " + game.getScore() + "\n\n");
 
         //print players
-        gui.printMassage("Turn of player: ");
-        gui.printPlayerInfo(game.getActualPlayer());
-        gui.printRepeatedLineOf("-");
-        gui.printMassage("Another player: ");
-        gui.printPlayerInfo(game.getNotActualPlayer());
-        gui.printRepeatedLineOf("-");
+        gui.displayMassage("Another player: ");
+        gui.displayPlayerInfo(game.getNotActualPlayer());
+        gui.displayRepeatedLineOf("-");
+        gui.displayMassage("Turn of player: ");
+        gui.displayPlayerInfo(game.getActualPlayer());
+        gui.displayRepeatedLineOf("-");
 
         //print input rules
         if(!game.isDealerTurn())
-            gui.printInputRules();
-    }
-
-    private void showScore() {
-        if(game.getGameMode() == Single || game.getGameMode() == Testing)
-            gui.printMassage("Your score: " + game.getScore() + "\n\n");
+            gui.displayInputRules();
     }
 
     @Override
@@ -130,17 +120,16 @@ public class ConsoleUI implements GameUI{
                 return;
             }
         }
-        //pare input when dealer player turn
+        //parse input when dealer player turn
         if(game.isDealerTurn()){
-            gui.printMassage("Press enter to see Dealer turn");
+            gui.displayMassage("Press enter to see Dealer turn");
             scanner.nextLine();
         }
 
-        gui.printActionResult(game.playTurn(action));
+        gui.displayActionResult(game.playTurn(action));
     }
 
     private Action useItem(Matcher matcher) {
-
         Class<? extends Item> itemClass = null;
         switch (matcher.group(2)) {
             case "b":
@@ -161,7 +150,6 @@ public class ConsoleUI implements GameUI{
             default:
                 throw new UnsupportedOperationException("Unknown operation parameter: " + matcher.group(1));
         }
-
         return new UseItem(game, itemClass);
     }
 
@@ -181,43 +169,38 @@ public class ConsoleUI implements GameUI{
     }
 
     private void doubleOrNothing(){
-        gui.printMassage("Double or nothing? (y/n) ");
-        String input = scanner.nextLine().toLowerCase();
+        gui.displayMassage("Double or nothing? (y/n) ");
+        String input = scanner.nextLine().toLowerCase().trim();
 
         while(!input.equals("y") && !input.equals("n") && !input.equals("yes") && !input.equals("no")){
-            gui.printMassage("Double or nothing? (y/n) ");
-            input = scanner.nextLine().toLowerCase();
+            gui.displayMassage("Double or nothing? (y/n) ");
+            input = scanner.nextLine().toLowerCase().trim();
         }
         if (!input.equals("y") && !input.equals("yes")){
             game.setGameState(GameState.GAME_ENDED);
-        };
-    }
-
-    private String askName(){
-        gui.printMassage("Please enter your name: ");
-        return scanner.nextLine();
-    }
-
-    private GameMode getGameMode(){
-        gui.printMassage("Do you wanna play solo? (y/n) ");
-        String input = scanner.nextLine().toLowerCase();
-
-        while(!input.equals("y") && !input.equals("n") && !input.equals("yes") && !input.equals("no") && !input.equals("t") && !input.equals("b")){
-            gui.printMassage("Do you wanna play solo? (y/n) ");
-            input = scanner.nextLine().toLowerCase();
         }
+    }
 
-        switch (input) {
-            case "y":
-            case "yes":
-                return Single;
-            case "n":
-            case "no":
-                return P2P;
-            case "b":
-                return B2B;
-            default:
-                return Testing;
+    private void showTotalScore(){
+        if(game.singleMod()){
+            gui.displayLine("Your total score is: " + game.getScore());
+            Player player = game.getHumanPlayer();
+            List<Score> topScores = scoreService.getTopScores("buckshot roulette");
+
+            if(player.getLifeCount() != 0){
+                scoreService.addScore(new Score("buckshot roulette", player.getName(), game.getScore(), new Date()));
+                if(!topScores.isEmpty()){
+                    int lastScore = topScores.get(topScores.size() -1).getPoints();
+                    if(game.getScore() > lastScore)
+                        gui.displayLine("Welcome to leaders table!");
+                }
+                else {
+                    gui.displayLine("Welcome to leaders table!");
+                }
+            }
+
+            topScores = scoreService.getTopScores("buckshot roulette");
+            gui.displayTopScores(topScores);
         }
     }
 }
