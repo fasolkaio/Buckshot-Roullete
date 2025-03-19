@@ -41,7 +41,7 @@ public class ConsoleGUI {
     public void displayComments(List<Comment> comments) {
         comments.forEach(comment -> {
             displayRepeatedLineOf("-");
-            System.out.println("(" + comment.getCommentedOn().toString() + ") " + comment.getPlayer() + ": " + comment.getComment());
+            System.out.println("(" + comment.getCommentedOn().toString() + ") " + comment.getPlayer() + ":\n" + comment.getComment());
             displayRepeatedLineOf("-");
         });
     }

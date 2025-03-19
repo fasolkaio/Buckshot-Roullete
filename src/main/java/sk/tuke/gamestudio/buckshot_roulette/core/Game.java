@@ -75,13 +75,7 @@ public class Game {
         else
             secondPlayer = new Human(secondPlayerName, playersLifeCount);
 
-        firstPlayer.addObserver(new HealthObserver(this));
-        secondPlayer.addObserver(new HealthObserver(this));
-        if(gameMode == GameMode.Single || gameMode == GameMode.Testing){
-            firstPlayer.addObserver(new UseItemObserver(this));
-            secondPlayer.addObserver(new MakeDamageObserver(this));
-            firstPlayer.addObserver(new GetDamageObserver(this));
-        }
+        addObservers();
 
         generateItems();
         reloadGun();
@@ -202,8 +196,7 @@ public class Game {
         int playersLifeCount = 1;
         firstPlayer = new Human("Tester", playersLifeCount);
         secondPlayer = new Dealer("Dealer", playersLifeCount, this);
-        firstPlayer.addObserver(new HealthObserver(this));
-        secondPlayer.addObserver(new HealthObserver(this));
+        addObservers();
         generateTestingItems();
         gun = new Gun(2, 1);
     }
@@ -219,5 +212,15 @@ public class Game {
         secondPlayer.addItem(new MagnifyingGlass());
         secondPlayer.addItem(new Beer());
         secondPlayer.addItem(new Saw());
+    }
+
+    private void addObservers(){
+        firstPlayer.addObserver(new HealthObserver(this));
+        secondPlayer.addObserver(new HealthObserver(this));
+        if(singleMod()){
+            firstPlayer.addObserver(new UseItemObserver(this));
+            secondPlayer.addObserver(new MakeDamageObserver(this));
+            firstPlayer.addObserver(new GetDamageObserver(this));
+        }
     }
 }
