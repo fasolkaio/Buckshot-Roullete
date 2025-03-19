@@ -1,4 +1,4 @@
-package sk.tuke.gamestudio.buckshot_roulette.ui;
+package sk.tuke.gamestudio.buckshot_roulette.ui.console;
 
 import lombok.AllArgsConstructor;
 import sk.tuke.gamestudio.buckshot_roulette.core.actions.ActionResult;

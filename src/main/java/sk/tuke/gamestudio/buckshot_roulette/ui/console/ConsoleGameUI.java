@@ -1,4 +1,4 @@
-package sk.tuke.gamestudio.buckshot_roulette.ui;
+package sk.tuke.gamestudio.buckshot_roulette.ui.console;
 
 import sk.tuke.gamestudio.buckshot_roulette.core.Game;
 import sk.tuke.gamestudio.buckshot_roulette.core.GameState;
@@ -7,6 +7,7 @@ import sk.tuke.gamestudio.buckshot_roulette.core.actions.Shoot;
 import sk.tuke.gamestudio.buckshot_roulette.core.actions.UseItem;
 import sk.tuke.gamestudio.buckshot_roulette.core.items.*;
 import sk.tuke.gamestudio.buckshot_roulette.core.players.Player;
+import sk.tuke.gamestudio.buckshot_roulette.ui.GameUI;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.service.*;
 
@@ -16,7 +17,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ConsoleGameUI implements GameUI{
+public class ConsoleGameUI implements GameUI {
     private Game game;
     private boolean firstRound = true;
 

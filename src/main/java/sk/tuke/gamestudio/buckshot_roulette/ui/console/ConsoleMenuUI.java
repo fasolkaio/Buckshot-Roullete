@@ -1,7 +1,9 @@
-package sk.tuke.gamestudio.buckshot_roulette.ui;
+package sk.tuke.gamestudio.buckshot_roulette.ui.console;
 
 import sk.tuke.gamestudio.buckshot_roulette.core.Game;
 import sk.tuke.gamestudio.buckshot_roulette.core.GameMode;
+import sk.tuke.gamestudio.buckshot_roulette.ui.GameUI;
+import sk.tuke.gamestudio.buckshot_roulette.ui.MenuState;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.service.*;
@@ -184,6 +186,8 @@ public class ConsoleMenuUI {
             commentPage = lastPage;
         }
 
+        gui.displayLine("Page " + (commentPage + 1));
+
         int firstComment = commentPage * PAGE_CAPACITY;
         int lastComment = Math.min(firstComment + PAGE_CAPACITY, comments.size());
         List<Comment> cutedList = comments.subList(firstComment, lastComment);
@@ -201,6 +205,8 @@ public class ConsoleMenuUI {
                 case "<":
                     toPreviousPage();
                     break;
+                case ">":
+                    toNextPage();
                 case "rate":
                     toNextPage();
                     break;
