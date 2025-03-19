@@ -207,8 +207,6 @@ public class ConsoleMenuUI {
                     break;
                 case ">":
                     toNextPage();
-                case "rate":
-                    toNextPage();
                     break;
                 case "exit":
                     toStartPage();
