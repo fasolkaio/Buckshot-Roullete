@@ -6,8 +6,6 @@ import sk.tuke.gamestudio.game.buckshot_roulette.core.items.ItemUseResult;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.items.Beer;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.items.Cigarettes;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.items.Handcuff;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.players.Human;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.players.Player;
 
 import static org.junit.jupiter.api.Assertions.*;
 

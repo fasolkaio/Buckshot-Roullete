@@ -1,9 +1,8 @@
 package sk.tuke.gamestudio.game.buckshot_roulette.core.weapon;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.players.Human;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.players.Player;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.weapon.Gun;
 
 import static java.lang.Math.round;
 import static org.junit.jupiter.api.Assertions.*;

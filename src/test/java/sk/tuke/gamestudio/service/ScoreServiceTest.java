@@ -7,8 +7,8 @@ import sk.tuke.gamestudio.entity.Score;
 
 import java.util.Date;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class ScoreServiceTest {
@@ -19,7 +19,7 @@ public class ScoreServiceTest {
     public void testAddScore() {
         scoreService.reset();
         scoreService.addScore(new Score("buckshot roulette", "lina", 5000, new Date()));
-        List<Score> scores =  scoreService.getTopScores("buckshot roulette");
+        List<Score> scores = scoreService.getTopScores("buckshot roulette");
         assertEquals(1, scores.size());
         Score score = scores.get(0);
         assertEquals("buckshot roulette", score.getGame());
@@ -37,7 +37,7 @@ public class ScoreServiceTest {
         scoreService.addScore(new Score("buckshot roulette", "pl4", 300, new Date()));
         scoreService.addScore(new Score("buckshot roulette", "pl5", 15042, new Date()));
 
-        List<Score> scores =  scoreService.getTopScores("buckshot roulette");
+        List<Score> scores = scoreService.getTopScores("buckshot roulette");
         assertEquals(4, scores.size());
 
         Score score = scores.get(0);
@@ -62,15 +62,14 @@ public class ScoreServiceTest {
     }
 
     @Test
-    public void testGetTopScoresCount(){
+    public void testGetTopScoresCount() {
         scoreService.reset();
 
-        for(int i = 0; i < 20; i++){
+        for (int i = 0; i < 20; i++) {
             scoreService.addScore(new Score("buckshot roulette", "player", 5000, new Date()));
-
         }
 
-        List<Score> scores =  scoreService.getTopScores("buckshot roulette");
+        List<Score> scores = scoreService.getTopScores("buckshot roulette");
         assertEquals(10, scores.size());
     }
 

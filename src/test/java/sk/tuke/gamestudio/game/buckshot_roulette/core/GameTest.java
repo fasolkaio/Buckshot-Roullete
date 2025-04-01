@@ -1,9 +1,6 @@
 package sk.tuke.gamestudio.game.buckshot_roulette.core;
 
 import org.junit.jupiter.api.Test;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.Game;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.GameMode;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.GameState;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.players.Dealer;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.players.Human;
 

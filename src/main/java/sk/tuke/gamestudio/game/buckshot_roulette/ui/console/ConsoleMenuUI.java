@@ -152,9 +152,9 @@ public class ConsoleMenuUI implements MenuUI {
     }
 
     private void gameHandle() {
+        menuState = MenuState.DEFAULT;
         gui.displayRuleMessage("Press enter to continue ");
         scanner.nextLine();
-        menuState = MenuState.DEFAULT;
     }
 
     private void showCommunity() {

@@ -3,9 +3,6 @@ package sk.tuke.gamestudio.game.buckshot_roulette.core.actions;
 import org.junit.jupiter.api.Test;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.Game;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.GameState;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.actions.Action;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.actions.Shoot;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.actions.ShootActionResult;
 
 import static org.junit.jupiter.api.Assertions.*;
 

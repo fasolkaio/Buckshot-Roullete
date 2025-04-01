@@ -2,9 +2,6 @@ package sk.tuke.gamestudio.game.buckshot_roulette.core.items;
 
 import org.junit.jupiter.api.Test;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.Game;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.items.Beer;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.items.Item;
-import sk.tuke.gamestudio.game.buckshot_roulette.core.items.ItemUseResult;
 
 import static org.junit.jupiter.api.Assertions.*;
 
