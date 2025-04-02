@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BeerTest {
     @Test
-    public void nullTest(){
+    public void nullTest() {
         Item beer = new Beer();
         assertThrows(UnsupportedOperationException.class, () -> beer.useItem(null));
     }
@@ -20,7 +20,7 @@ public class BeerTest {
         int liveBulletCountBefore = game.getGun().getLiveBulletsCount();
         ItemUseResult result = beer.useItem(game);
         if (result == ItemUseResult.BULLET_WAS_LIVE)
-                assertEquals(liveBulletCountBefore - 1, game.getGun().getLiveBulletsCount());
+            assertEquals(liveBulletCountBefore - 1, game.getGun().getLiveBulletsCount());
         assertEquals(bulletCountBefore - 1, game.getGun().getBulletsCount());
     }
 

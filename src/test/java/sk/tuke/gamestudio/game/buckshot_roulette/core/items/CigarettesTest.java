@@ -8,12 +8,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CigarettesTest {
     @Test
-    public void nullTest(){
+    public void nullTest() {
         Item cigarettes = new Cigarettes();
         assertThrows(UnsupportedOperationException.class, () -> cigarettes.useItem(null));
     }
+
     @Test
-    public void testUse(){
+    public void testUse() {
         Game game = new Game("first", "second");
         Item cigarettes = new Cigarettes();
         Player actual = game.getActualPlayer();
@@ -23,8 +24,9 @@ public class CigarettesTest {
         assertEquals(ItemUseResult.USE_ITEM_SUCCESS, result);
         assertEquals(lives + 1, actual.getLifeCount());
     }
+
     @Test
-    public void testUseToFull(){
+    public void testUseToFull() {
         Game game = new Game("first", "second");
         Item cigarettes = new Cigarettes();
         Player actual = game.getActualPlayer();

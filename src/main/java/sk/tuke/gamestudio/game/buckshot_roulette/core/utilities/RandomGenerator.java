@@ -4,7 +4,8 @@ import java.util.Random;
 
 public class RandomGenerator {
     private static final Random RANDOM = new Random();
-    private RandomGenerator(){
+
+    private RandomGenerator() {
         throw new UnsupportedOperationException("Utility class cannot be created");
     }
 

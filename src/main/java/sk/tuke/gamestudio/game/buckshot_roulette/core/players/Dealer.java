@@ -24,14 +24,14 @@ public class Dealer extends Player {
     @Override
     public ActionResult doTurn(Action action) {
         currentChance = getCurrentChance();
-        if(remember) {
+        if (remember) {
             currentChance = nextChance;
             remember = false;
         }
         Action actionToUse = generateAction();
         ActionResult result = actionToUse.execute();
-        if(remember){
-            if(result instanceof UseActionResult && ((UseActionResult) result).getItemUseResult() == ItemUseResult.BULLET_WAS_BLANK)
+        if (remember) {
+            if (result instanceof UseActionResult && ((UseActionResult) result).getItemUseResult() == ItemUseResult.BULLET_WAS_BLANK)
                 nextChance = Chance.ZERO;
             else
                 nextChance = Chance.FULL;
@@ -41,43 +41,43 @@ public class Dealer extends Player {
     }
 
     private Chance getCurrentChance() {
-        float chance = (float) game.getGun().getLiveBulletsCount()/(float)game.getGun().getBulletsCount();
-        if(chance == 0)
+        float chance = (float) game.getGun().getLiveBulletsCount() / (float) game.getGun().getBulletsCount();
+        if (chance == 0)
             return Chance.ZERO;
-        if(chance < 0.5)
+        if (chance < 0.5)
             return Chance.LOW;
-        if(chance == 0.5)
+        if (chance == 0.5)
             return Chance.MEDIUM;
-        if(chance == 1)
+        if (chance == 1)
             return Chance.FULL;
         return Chance.HIGH;
     }
 
-    private Action generateAction(){
+    private Action generateAction() {
         //use cigarettes if you need
-        if(getLifeCount() < getMaxLifeCount() && isItemPresent(Cigarettes.class)){
+        if (getLifeCount() < getMaxLifeCount() && isItemPresent(Cigarettes.class)) {
             return new UseItem(game, Cigarettes.class);
         }
 
         //use handcuff if can
-        if(currentChance != Chance.ZERO && isItemPresent(Handcuff.class) && !handcuffWereUsed){
+        if (currentChance != Chance.ZERO && isItemPresent(Handcuff.class) && !handcuffWereUsed) {
             handcuffWereUsed = true;
             return new UseItem(game, Handcuff.class);
         }
 
         //use glass if can
-        if(currentChance != Chance.ZERO && currentChance != Chance.FULL && isItemPresent(MagnifyingGlass.class)){
+        if (currentChance != Chance.ZERO && currentChance != Chance.FULL && isItemPresent(MagnifyingGlass.class)) {
             remember = true;
             return new UseItem(game, MagnifyingGlass.class);
         }
 
         //use beer if you have low chance
-        if(Chance.LOW.equals(currentChance) && isItemPresent(Beer.class)) {
+        if (Chance.LOW.equals(currentChance) && isItemPresent(Beer.class)) {
             return new UseItem(game, Beer.class);
         }
 
         //use saw if you want to hoot opponent
-        if((currentChance == Chance.HIGH || currentChance == Chance.FULL) && isItemPresent(Saw.class) && !sawWasUsed){
+        if ((currentChance == Chance.HIGH || currentChance == Chance.FULL) && isItemPresent(Saw.class) && !sawWasUsed) {
             remember = true;
             sawWasUsed = true;
             return new UseItem(game, Saw.class);
@@ -85,7 +85,7 @@ public class Dealer extends Player {
 
         //shoot
         sawWasUsed = false;
-        if(shootOpponent()){
+        if (shootOpponent()) {
             handcuffWereUsed = false;
             return new Shoot(game, false);
         }
@@ -93,15 +93,15 @@ public class Dealer extends Player {
     }
 
     private boolean shootOpponent() {
-        if(currentChance == Chance.HIGH || currentChance == Chance.FULL)
+        if (currentChance == Chance.HIGH || currentChance == Chance.FULL)
             return true;
-        else if(currentChance == Chance.LOW || currentChance == Chance.ZERO)
+        else if (currentChance == Chance.LOW || currentChance == Chance.ZERO)
             return false;
         else
             return RandomGenerator.tossCoin();
     }
 
-    private boolean isItemPresent(Class<? extends Item> itemClass){
+    private boolean isItemPresent(Class<? extends Item> itemClass) {
         return getItems().stream()
                 .filter(itemClass::isInstance)
                 .findFirst()

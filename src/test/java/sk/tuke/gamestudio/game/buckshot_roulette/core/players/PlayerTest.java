@@ -43,9 +43,9 @@ public class PlayerTest {
     }
 
     @Test
-    public void testAddItem(){
+    public void testAddItem() {
         Player player = new Human("player", 5);
-        for(int i = 0; i < 8; i ++){
+        for (int i = 0; i < 8; i++) {
             player.addItem(new Beer());
         }
         assertEquals(8, player.getItems().size());

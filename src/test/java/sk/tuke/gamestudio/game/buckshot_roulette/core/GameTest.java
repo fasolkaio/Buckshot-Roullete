@@ -49,7 +49,7 @@ public class GameTest {
 
 
     @Test
-    public void testGetPlayer(){
+    public void testGetPlayer() {
         Game game = new Game("first", "second");
         assertEquals("first", game.getActualPlayer().getName());
         assertEquals("second", game.getNotActualPlayer().getName());
@@ -59,7 +59,7 @@ public class GameTest {
     }
 
     @Test
-    public void testGetWinner(){
+    public void testGetWinner() {
         Game game = new Game("first", "second");
         assertNull(game.getWinnerName());
         game.getActualPlayer().getDamage(10);
@@ -67,10 +67,10 @@ public class GameTest {
     }
 
     @Test
-    public void testReloadGun(){
+    public void testReloadGun() {
         Game game = new Game("first", "second");
         assertFalse(game.reloadGun());
-        while (!game.getGun().isEmpty()){
+        while (!game.getGun().isEmpty()) {
             game.getGun().removeBullet();
         }
         assertTrue(game.reloadGun());
@@ -78,7 +78,7 @@ public class GameTest {
     }
 
     @Test
-    public void testRoundOver(){
+    public void testRoundOver() {
         Game game = new Game("first", "second");
         game.getActualPlayer().getDamage(10);
         assertEquals(GameState.ROUND_ENDED, game.getGameState());

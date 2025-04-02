@@ -19,7 +19,7 @@ public class CommentServiceTest {
     public void testAddComment() {
         service.reset();
         service.addComment(new Comment("buckshot roulette", "lina", "Cool game!", new Date()));
-        List<Comment> comments =  service.getComments("buckshot roulette");
+        List<Comment> comments = service.getComments("buckshot roulette");
         assertEquals(1, comments.size());
         Comment comment = comments.get(0);
         assertEquals("buckshot roulette", comment.getGame());
@@ -40,7 +40,7 @@ public class CommentServiceTest {
         service.addComment(new Comment("buckshot roulette", "pl7", "com7", new Date()));
         service.addComment(new Comment("mines", "pl8", "com8", new Date()));
 
-        List<Comment> comments =  service.getComments("buckshot roulette");
+        List<Comment> comments = service.getComments("buckshot roulette");
         assertEquals(5, comments.size());
 
         Comment comment = comments.get(4);

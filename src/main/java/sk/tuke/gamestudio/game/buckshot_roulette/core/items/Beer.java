@@ -11,7 +11,7 @@ public class Beer extends Item {
 
     @Override
     public ItemUseResult useItem(Game game) {
-        if(game == null)
+        if (game == null)
             throw new UnsupportedOperationException("Unsupported operation. Game not exist");
         Gun gun = game.getGun();
         if (gun == null || gun.isEmpty())

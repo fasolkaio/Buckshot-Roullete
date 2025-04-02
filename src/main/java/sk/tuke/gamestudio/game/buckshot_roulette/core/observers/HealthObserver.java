@@ -11,7 +11,7 @@ public class HealthObserver implements GameObserver {
     @Override
     public void notifyGame() {
         game.setGameState(GameState.ROUND_ENDED);
-        if(game.getActualPlayer().getLifeCount() == 0)
+        if (game.getActualPlayer().getLifeCount() == 0)
             game.setScore(0);
     }
 

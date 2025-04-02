@@ -48,15 +48,15 @@ public class ConsoleGameUI implements GameUI {
             throw new NullPointerException("Game is null");
         this.game = game;
 
-        while (!game.isEnded()){
-            if(!firstRound)
+        while (!game.isEnded()) {
+            if (!firstRound)
                 game.reinitRound();
             firstRound = false;
 
             gui.displayGun(game.getGun());
 
-            while (!game.isRoundEnded()){
-                if(game.getGun().isEmpty()){
+            while (!game.isRoundEnded()) {
+                if (game.getGun().isEmpty()) {
                     game.reloadGun();
                     game.generateItems();
                     gui.displayGun(game.getGun());
@@ -68,10 +68,9 @@ public class ConsoleGameUI implements GameUI {
 
             gui.displayWinner(game.getWinnerName());
 
-            if(!game.singleMod() || game.getHumanPlayer().getLifeCount() == 0){
+            if (!game.singleMod() || game.getHumanPlayer().getLifeCount() == 0) {
                 game.setGameState(GameState.GAME_ENDED);
-            }
-            else{
+            } else {
                 doubleOrNothing();
             }
         }
@@ -87,7 +86,7 @@ public class ConsoleGameUI implements GameUI {
 
         gui.displayRepeatedLineOf("=");
 
-        if(game.singleMod())
+        if (game.singleMod())
             gui.displayInfoMessage("Your score: " + game.getScore() + "\n");
 
         //print players
@@ -99,7 +98,7 @@ public class ConsoleGameUI implements GameUI {
         gui.displayRepeatedLineOf("-");
 
         //print input rules
-        if(!game.isDealerTurn())
+        if (!game.isDealerTurn())
             gui.displayInputRules();
     }
 
@@ -110,22 +109,22 @@ public class ConsoleGameUI implements GameUI {
 
         Action action = null;
         //parse input when human player turn
-        if(!game.isDealerTurn() && !game.getActualPlayer().scipTurn()){
+        if (!game.isDealerTurn() && !game.getActualPlayer().scipTurn()) {
             String input = scanner.nextLine().trim().toLowerCase();
             Matcher matcherUse = usePattern.matcher(input);
             Matcher matcherShoot = shootPattern.matcher(input);
 
-            if(matcherUse.find())
+            if (matcherUse.find())
                 action = useItem(matcherUse);
-            else if(matcherShoot.find())
+            else if (matcherShoot.find())
                 action = shootPlayer(matcherShoot);
-            else{
+            else {
                 gui.displayWarningMassage("Wrong input!");
                 return;
             }
         }
         //parse input when dealer player turn
-        if(game.isDealerTurn()){
+        if (game.isDealerTurn()) {
             gui.displayRuleMessage("Press enter to see Dealer turn");
             scanner.nextLine();
         }
@@ -154,33 +153,32 @@ public class ConsoleGameUI implements GameUI {
         return new Shoot(game, selfShoot);
     }
 
-    private void doubleOrNothing(){
+    private void doubleOrNothing() {
         gui.displayInfoMessage("Double or nothing? (y/n) ");
         String input = scanner.nextLine().toLowerCase().trim();
 
-        while(!input.equals("y") && !input.equals("n") && !input.equals("yes") && !input.equals("no")){
+        while (!input.equals("y") && !input.equals("n") && !input.equals("yes") && !input.equals("no")) {
             gui.displayInfoMessage("Double or nothing? (y/n) ");
             input = scanner.nextLine().toLowerCase().trim();
         }
-        if (!input.equals("y") && !input.equals("yes")){
+        if (!input.equals("y") && !input.equals("yes")) {
             game.setGameState(GameState.GAME_ENDED);
         }
     }
 
-    private void showTotalScore(){
-        if(game.singleMod()){
+    private void showTotalScore() {
+        if (game.singleMod()) {
             gui.displayInfoMessage("Your total score is: " + game.getScore());
             Player player = game.getHumanPlayer();
             List<Score> topScores = scoreService.getTopScores("buckshot roulette");
 
-            if(player.getLifeCount() != 0){
+            if (player.getLifeCount() != 0) {
                 scoreService.addScore(new Score("buckshot roulette", player.getName(), game.getScore(), new Date()));
-                if(!topScores.isEmpty()){
-                    int lastScore = topScores.get(topScores.size() -1).getPoints();
-                    if(game.getScore() > lastScore)
+                if (!topScores.isEmpty()) {
+                    int lastScore = topScores.get(topScores.size() - 1).getPoints();
+                    if (game.getScore() > lastScore)
                         gui.displayInfoMessage("Welcome to leaders table!");
-                }
-                else {
+                } else {
                     gui.displayInfoMessage("Welcome to leaders table!");
                 }
             }

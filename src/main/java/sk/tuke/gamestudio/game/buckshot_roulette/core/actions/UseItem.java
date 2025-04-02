@@ -13,16 +13,16 @@ public class UseItem implements Action {
 
     @Override
     public ActionResult execute() {
-        if(game == null)
+        if (game == null)
             throw new NullPointerException("Game is null");
 
         Player player = game.getActualPlayer();
 
-        if(player == null)
+        if (player == null)
             throw new NullPointerException("Player not found");
 
         ItemUseResult result = player.useItem(itemClass, game);
 
-        return new UseActionResult(player,result, itemClass);
+        return new UseActionResult(player, result, itemClass);
     }
 }

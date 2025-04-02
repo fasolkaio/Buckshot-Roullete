@@ -27,28 +27,28 @@ public class ConsoleGUI {
     public static final String YELLOW = "\u001B[33m";
     public static final String BLUE = "\u001B[34m";
 
-    private void displayGameLogo(){
+    private void displayGameLogo() {
         System.out.println("Welcome to BuckShot Roulette!");
     }
 
-    public void displayMenu(){
+    public void displayMenu() {
         displayGameLogo();
-        System.out.print( "\nMENU:\n" +
+        System.out.print("\nMENU:\n" +
                 yellow("Play\n" +
-                "Community\n" +
-                "Exit\n") + blue("\nEnter command: "));
+                        "Community\n" +
+                        "Exit\n") + blue("\nEnter command: "));
     }
 
     public void displayComments(List<Comment> comments, int commentPage) {
         System.out.println("\nCOMMENTS: ");
-        if(comments.isEmpty()){
+        if (comments.isEmpty()) {
             System.out.println(blue("No comments found"));
             return;
         }
 
         comments.forEach(comment -> {
             displayRepeatedLineOf("-");
-            System.out.println( blue("(" + comment.getCommentedOn().toString() + ") ") +
+            System.out.println(blue("(" + comment.getCommentedOn().toString() + ") ") +
                     green(comment.getPlayer()) +
                     ":\n" + comment.getComment());
             displayRepeatedLineOf("-");
@@ -59,7 +59,7 @@ public class ConsoleGUI {
 
     public void displayTopScores(List<Score> topScores) {
         System.out.println("\nTOP SCORES:");
-        if(topScores.isEmpty()){
+        if (topScores.isEmpty()) {
             System.out.println(blue("No scores found"));
             return;
         }
@@ -76,21 +76,21 @@ public class ConsoleGUI {
     public void displayGun(Gun gun) {
         displayRepeatedLineOf("*");
         System.out.printf("Gun was reloaded: " +
-                red("%d live around") +
-                " | " +
-                green("%d blank%n"),
+                        red("%d live around") +
+                        " | " +
+                        green("%d blank%n"),
                 gun.getLiveBulletsCount(), gun.getBulletsCount() - gun.getLiveBulletsCount());
         displayRepeatedLineOf("*");
     }
 
     public void displayInputRules() {
-        System.out.println(blue("* If you wanna use item type (u/use x) where x is an item to use\n"+
-                "c - cigarettes, h - handcuff, b -beer, s - saw, m - magnifying glass\n"+
+        System.out.println(blue("* If you wanna use item type (u/use x) where x is an item to use\n" +
+                "c - cigarettes, h - handcuff, b -beer, s - saw, m - magnifying glass\n" +
                 "\n* If you wanna shoot yourself type (sh/shoot m), opponent (sh/shoot o)\n" +
                 "\nEnter your turn: "));
     }
 
-    public void displayCommunityRules(){
+    public void displayCommunityRules() {
         System.out.println(blue("* Type (rate) to rate game or " +
                 "(comment) to add comment or " +
                 "(< | >) to scroll comment list or " +
@@ -98,40 +98,39 @@ public class ConsoleGUI {
     }
 
     public void displayActionResult(ActionResult actionResult) {
-        if(actionResult == null)
+        if (actionResult == null)
             throw new UnsupportedOperationException("No action result");
 
-        if(actionResult instanceof SkipTurnActionResult)
+        if (actionResult instanceof SkipTurnActionResult)
             System.out.println("Player " + ((SkipTurnActionResult) actionResult).getPlayer().getName().toUpperCase() + " skipped turn");
-        else if(actionResult instanceof ShootActionResult)
+        else if (actionResult instanceof ShootActionResult)
             displayShootActionResult((ShootActionResult) actionResult);
-        else if(actionResult instanceof UseActionResult)
+        else if (actionResult instanceof UseActionResult)
             displayUseItemActionResult((UseActionResult) actionResult);
         else
             throw new UnsupportedOperationException("Unsupported action result: " + actionResult.getClass().getSimpleName());
     }
 
     private void displayUseItemActionResult(UseActionResult actionResult) {
-        if(actionResult == null)
+        if (actionResult == null)
             throw new UnsupportedOperationException("No action result");
         String playerName = actionResult.getPlayer().getName().toUpperCase();
         String itemName = actionResult.getItemClass().getSimpleName().toLowerCase();
 
-        if(actionResult.getItemUseResult() == ItemUseResult.ERROR) {
+        if (actionResult.getItemUseResult() == ItemUseResult.ERROR) {
             displayWarningMassage("Error in using item: " + itemName);
             return;
         }
 
-        if(actionResult.getItemUseResult() == ItemUseResult.USE_ITEM_FAILED){
-            System.out.println(red( "Player " + playerName + " can't use " + itemName));
+        if (actionResult.getItemUseResult() == ItemUseResult.USE_ITEM_FAILED) {
+            System.out.println(red("Player " + playerName + " can't use " + itemName));
             return;
         }
 
         System.out.println(green("Player " + playerName + " used " + itemName + " successfully"));
-        if(actionResult.getItemUseResult() == ItemUseResult.BULLET_WAS_BLANK){
+        if (actionResult.getItemUseResult() == ItemUseResult.BULLET_WAS_BLANK) {
             System.out.println(green("Bullet was blank"));
-        }
-        else if(actionResult.getItemUseResult() == ItemUseResult.BULLET_WAS_LIVE){
+        } else if (actionResult.getItemUseResult() == ItemUseResult.BULLET_WAS_LIVE) {
             System.out.println(red("Bullet was live"));
         }
     }
@@ -141,7 +140,7 @@ public class ConsoleGUI {
         String status = actionResult.isShootResult() ? red(" hit ") : green(" missed a shot at ");
         String who = actionResult.isSelfShoot() ? yellow("himself") : yellow("the opponent");
 
-        System.out.println("Player " + playerName  + status + who);
+        System.out.println("Player " + playerName + status + who);
     }
 
     public void displayWinner(String winnerName) {
@@ -155,8 +154,8 @@ public class ConsoleGUI {
             throw new UnsupportedOperationException("Player is null");
 
         System.out.println(player.getName().toUpperCase());
-        if(player instanceof Human){
-            if(player.getLifeCount() > 0)
+        if (player instanceof Human) {
+            if (player.getLifeCount() > 0)
                 System.out.println(green("\n  _---_\n" +
                         " ( o_o ) \n" +
                         " / >-< \\ \n"));
@@ -164,9 +163,8 @@ public class ConsoleGUI {
                 System.out.println(blue("\n  _---_\n" +
                         " ( x_x ) \n" +
                         " / >-< \\ \n"));
-        }
-        else{
-            if(player.getLifeCount() > 0)
+        } else {
+            if (player.getLifeCount() > 0)
                 System.out.println(red("\n  /\\_/\\\n" +
                         " ( o.o )\n" +
                         " / >^< \\\n"));

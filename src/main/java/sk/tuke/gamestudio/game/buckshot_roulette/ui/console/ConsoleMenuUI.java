@@ -60,7 +60,7 @@ public class ConsoleMenuUI implements MenuUI {
         modeInputPattern = Pattern.compile("^(single|duo|bot|test|s|d|b|t|exit)$");
     }
 
-    public void run(){
+    public void run() {
         while (menuState != MenuState.EXIT) {
             show();
             handleInput();
@@ -94,8 +94,8 @@ public class ConsoleMenuUI implements MenuUI {
 
     private void menuHandle(String input) {
         Matcher matcher = menuInputPattern.matcher(input);
-        if(matcher.matches()){
-            switch (matcher.group(0)){
+        if (matcher.matches()) {
+            switch (matcher.group(0)) {
                 case "play":
                     menuState = MenuState.GAME;
                     break;
@@ -110,15 +110,14 @@ public class ConsoleMenuUI implements MenuUI {
                     menuState = MenuState.EXIT;
                     break;
             }
-        }
-        else{
+        } else {
             gui.displayWarningMassage("Wrong input");
         }
     }
 
     private void play() {
         GameMode gameMode = getGameMode();
-        if(gameMode == null) return;
+        if (gameMode == null) return;
         Game game = switch (gameMode) {
             case Single -> new Game(askName());
             case P2P -> new Game(askName(), askName());
@@ -127,13 +126,13 @@ public class ConsoleMenuUI implements MenuUI {
         gameUi.play(game);
     }
 
-    private GameMode getGameMode(){
+    private GameMode getGameMode() {
         gui.displayRuleMessage("Choose game mode (single|duo) or type (exit) to exit: ");
         String input = scanInput();
 
         Matcher matcher = modeInputPattern.matcher(input);
 
-        if(!matcher.find()){
+        if (!matcher.find()) {
             gui.displayWarningMassage("Wrong input");
             return null;
         }
@@ -176,13 +175,13 @@ public class ConsoleMenuUI implements MenuUI {
 
     private void showComments() {
         List<Comment> comments = commentService.getComments(gameName);
-        if(comments.isEmpty()) {
+        if (comments.isEmpty()) {
             gui.displayComments(comments, 0);
             return;
         }
         int size = comments.size();
         int lastPage = (int) (Math.ceil((double) size / PAGE_CAPACITY) - 1);
-        if(commentPage > lastPage){
+        if (commentPage > lastPage) {
             commentPage = lastPage;
         }
 
@@ -195,16 +194,15 @@ public class ConsoleMenuUI implements MenuUI {
 
     private void communityHandle(String input) {
         Matcher matcher = communityInputPattern.matcher(input);
-        if(matcher.matches()){
-            switch (matcher.group(0)){
+        if (matcher.matches()) {
+            switch (matcher.group(0)) {
                 case "comment" -> comment();
                 case "<" -> toPreviousPage();
                 case ">" -> toNextPage();
                 case "exit" -> exitToMenu();
                 case "rate" -> rate();
             }
-        }
-        else{
+        } else {
             gui.displayWarningMassage("Wrong input");
         }
     }
@@ -221,18 +219,17 @@ public class ConsoleMenuUI implements MenuUI {
     private void rate() {
         String name = askName();
         int rating = ratingService.getRating(gameName, name);
-        if(rating > 0){
+        if (rating > 0) {
             gui.displayRuleMessage("You have already rated game by " + rating + " stars");
         }
         gui.displayRuleMessage("Rate game from 1 to 5: ");
 
         Matcher matcher = ratingInputPattern.matcher(scanInput());
-        if(matcher.matches()){
+        if (matcher.matches()) {
             int newRating = Integer.parseInt(matcher.group(0));
             ratingService.setRating(new Rating(gameName, name, newRating, new Date()));
             gui.displayRuleMessage("Rated successfully");
-        }
-        else{
+        } else {
             gui.displayWarningMassage("Wrong input");
         }
     }
@@ -243,7 +240,7 @@ public class ConsoleMenuUI implements MenuUI {
 
     private void toPreviousPage() {
         commentPage--;
-        if(commentPage < 0){
+        if (commentPage < 0) {
             commentPage = 0;
         }
     }
@@ -253,16 +250,16 @@ public class ConsoleMenuUI implements MenuUI {
         menuState = MenuState.DEFAULT;
     }
 
-    private String askName(){
+    private String askName() {
         gui.displayRuleMessage("Please enter your name: ");
         return scanner.nextLine().trim();
     }
 
-    private String scanInput(){
+    private String scanInput() {
         return scanner.nextLine().toLowerCase().trim();
     }
 
-    private void reset(){
+    private void reset() {
         commentService.reset();
         ratingService.reset();
         scoreService.reset();

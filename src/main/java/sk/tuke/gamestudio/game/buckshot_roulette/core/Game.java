@@ -19,7 +19,8 @@ import sk.tuke.gamestudio.game.buckshot_roulette.core.weapon.Gun;
 public class Game {
     @Getter
     private Gun gun;
-    @Getter @Setter
+    @Getter
+    @Setter
     private GameState gameState = GameState.FIRST_PLAYER_TURN;
     @Getter
     private int score = 8000;
@@ -59,15 +60,15 @@ public class Game {
     }
 
     //initialization
-    private void initRound(String firstPlayerName, String secondPlayerName){
+    private void initRound(String firstPlayerName, String secondPlayerName) {
         int playersLifeCount = RandomGenerator.randomIntBetween(2, 5);
 
-        if(gameMode != GameMode.B2B)
+        if (gameMode != GameMode.B2B)
             firstPlayer = new Human(firstPlayerName, playersLifeCount);
         else
             firstPlayer = new Dealer(firstPlayerName, playersLifeCount, this);
 
-        if(gameMode != GameMode.P2P)
+        if (gameMode != GameMode.P2P)
             secondPlayer = new Dealer(secondPlayerName, playersLifeCount, this);
         else
             secondPlayer = new Human(secondPlayerName, playersLifeCount);
@@ -78,15 +79,15 @@ public class Game {
         reloadGun();
     }
 
-    public void reinitRound(){
+    public void reinitRound() {
         gun = null;
-        if(gameMode == GameMode.Single || gameMode == GameMode.Testing)
+        if (gameMode == GameMode.Single || gameMode == GameMode.Testing)
             gameState = GameState.FIRST_PLAYER_TURN;
         score = score * 2;
         initRound(firstPlayer.getName(), secondPlayer.getName());
     }
 
-    public void generateItems(){
+    public void generateItems() {
         int itemsCount = RandomGenerator.randomIntBetween(2, 4);
         for (int i = 0; i < itemsCount; i++) {
             firstPlayer.addItem(generateRandomItem());
@@ -100,28 +101,28 @@ public class Game {
     }
 
     //if old is empty or does not exist crate new gun and return true
-    public boolean reloadGun(){
-        if(gun != null && !gun.isEmpty())
+    public boolean reloadGun() {
+        if (gun != null && !gun.isEmpty())
             return false;
         gun = new Gun();
         return true;
     }
 
     //turn logic
-    public ActionResult playTurn(Action action){
-        if(gun == null || gun.isEmpty())
+    public ActionResult playTurn(Action action) {
+        if (gun == null || gun.isEmpty())
             throw new UnsupportedOperationException("Game does not completed, reload gun to continue!");
-        if(!getActualPlayer().scipTurn())
+        if (!getActualPlayer().scipTurn())
             return getActualPlayer().doTurn(action);
-        else{
+        else {
             getActualPlayer().setSkipTurn(false);
             switchTurn();
             return new SkipTurnActionResult(getNotActualPlayer());
         }
     }
 
-    public void switchTurn(){
-        if(gameState.equals(GameState.ROUND_ENDED))
+    public void switchTurn() {
+        if (gameState.equals(GameState.ROUND_ENDED))
             return;
         gameState = gameState == GameState.FIRST_PLAYER_TURN
                 ? GameState.SECOND_PLAYER_TURN
@@ -144,47 +145,47 @@ public class Game {
     }
 
     public Player getHumanPlayer() {
-        if(singleMod())
+        if (singleMod())
             return firstPlayer;
         else
             return null;
     }
 
     //specific getters
-    public String getWinnerName(){
-        if(firstPlayer.getLifeCount() == 0)
+    public String getWinnerName() {
+        if (firstPlayer.getLifeCount() == 0)
             return secondPlayer.getName();
-        else if(secondPlayer.getLifeCount() == 0)
+        else if (secondPlayer.getLifeCount() == 0)
             return firstPlayer.getName();
         else
             return null;
     }
 
-    public boolean isDealerTurn(){
+    public boolean isDealerTurn() {
         return getActualPlayer() instanceof Dealer;
     }
 
-    public boolean isRoundEnded(){
+    public boolean isRoundEnded() {
         return gameState.equals(GameState.ROUND_ENDED);
     }
 
-    public boolean isEnded(){
+    public boolean isEnded() {
         return gameState.equals(GameState.GAME_ENDED);
     }
 
-    public boolean continueGame(){
+    public boolean continueGame() {
         return (gameMode.equals(GameMode.Single) || gameMode.equals(GameMode.Testing)) && firstPlayer.getLifeCount() != 0;
     }
 
-    public  boolean singleMod(){
+    public boolean singleMod() {
         return gameMode == GameMode.Single || gameMode == GameMode.Testing;
     }
 
     //specific setters
 
-    public void setScore(int score){
+    public void setScore(int score) {
         this.score = score;
-        if(this.score < 0)
+        if (this.score < 0)
             this.score = 0;
     }
 
@@ -211,10 +212,10 @@ public class Game {
         secondPlayer.addItem(new Saw());
     }
 
-    private void addObservers(){
+    private void addObservers() {
         firstPlayer.addObserver(new HealthObserver(this));
         secondPlayer.addObserver(new HealthObserver(this));
-        if(singleMod()){
+        if (singleMod()) {
             firstPlayer.addObserver(new UseItemObserver(this));
             secondPlayer.addObserver(new MakeDamageObserver(this));
             firstPlayer.addObserver(new GetDamageObserver(this));

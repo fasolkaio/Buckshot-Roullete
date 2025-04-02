@@ -10,7 +10,7 @@ import java.sql.*;
 import static java.lang.Math.round;
 
 public class RatingServiceJDBC implements RatingService {
-//    private static final String CREATE = "CREATE TABLE IF NOT EXISTS rating (game VARCHAR(64) NOT NULL, player VARCHAR(64) NOT NULL, rating INT NOT NULL, ratedOn TIMESTAMP NOT NULL, PRIMARY KEY (game, player));";
+    //    private static final String CREATE = "CREATE TABLE IF NOT EXISTS rating (game VARCHAR(64) NOT NULL, player VARCHAR(64) NOT NULL, rating INT NOT NULL, ratedOn TIMESTAMP NOT NULL, PRIMARY KEY (game, player));";
     public static final String DELETE = "DELETE FROM rating";
     public static final String SELECT = "SELECT * FROM rating WHERE game = ? AND player = ? LIMIT 1;";
     public static final String AVERAGE = "SELECT AVG(rating) FROM rating WHERE game = ?;\n";

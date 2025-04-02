@@ -22,7 +22,7 @@ public class Gun {
     public Gun() {
         bullets = new ArrayList<>();
         damage = 1;
-        bulletsCount = RandomGenerator.randomIntBetween(2,8);
+        bulletsCount = RandomGenerator.randomIntBetween(2, 8);
         liveBulletsCount = RandomGenerator.randomIntBetween(1, (int) round(bulletsCount * 0.7));
         generateBullets();
     }
@@ -41,9 +41,9 @@ public class Gun {
             bullets.add(new Bullet(true));
         }
         int pos;
-        for(int i = 0; i < liveBulletsCount;){
+        for (int i = 0; i < liveBulletsCount; ) {
             pos = RandomGenerator.randomIntBetween(0, bulletsCount - 1);
-            if(bullets.get(pos).isBlank()) {
+            if (bullets.get(pos).isBlank()) {
                 bullets.set(pos, new Bullet(false));
                 i++;
             }
@@ -51,27 +51,27 @@ public class Gun {
     }
 
     // return true if next bullet is life
-    public boolean checkBullet(){
-        if(bullets.isEmpty()){
+    public boolean checkBullet() {
+        if (bullets.isEmpty()) {
             throw new UnsupportedOperationException("no bullets");
         }
 
         return !bullets.get(0).isBlank();
     }
 
-    public boolean removeBullet(){
+    public boolean removeBullet() {
         boolean isLive = checkBullet();
         bullets.remove(0);
         bulletsCount--;
-        if(isLive)
+        if (isLive)
             liveBulletsCount--;
         return isLive;
     }
 
-    public boolean shoot(Player player){
-        if(player == null)
+    public boolean shoot(Player player) {
+        if (player == null)
             throw new NullPointerException("player is null");
-        if (removeBullet()){
+        if (removeBullet()) {
             player.getDamage(damage);
             normalizeDamage();
             return true;
@@ -80,18 +80,18 @@ public class Gun {
         return false;
     }
 
-    public boolean doubleDamage(){
-        if(damage != 1)
+    public boolean doubleDamage() {
+        if (damage != 1)
             return false;
-        setDamage(getDamage()*2);
+        setDamage(getDamage() * 2);
         return true;
     }
 
-    private void normalizeDamage(){
+    private void normalizeDamage() {
         setDamage(1);
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return bullets.isEmpty();
     }
 

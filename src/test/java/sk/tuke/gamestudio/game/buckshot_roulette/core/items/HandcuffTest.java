@@ -8,12 +8,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HandcuffTest {
     @Test
-    public void nullTest(){
+    public void nullTest() {
         Item handcuff = new Handcuff();
         assertThrows(UnsupportedOperationException.class, () -> handcuff.useItem(null));
     }
+
     @Test
-    public void testUseItem(){
+    public void testUseItem() {
         Game game = new Game("first", "second");
         Item handcuff = new Handcuff();
         Player notActual = game.getNotActualPlayer();

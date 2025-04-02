@@ -36,22 +36,22 @@ public abstract class Player {
 
     public abstract ActionResult doTurn(Action action);
 
-    public boolean heal(){
-        if(lifeCount < maxLifeCount){
+    public boolean heal() {
+        if (lifeCount < maxLifeCount) {
             lifeCount++;
             return true;
         }
         return false;
     }
 
-    public void getDamage(int damage){
+    public void getDamage(int damage) {
         lifeCount -= damage;
         observers.stream()
                 .filter(o -> o instanceof GetDamageObserver || o instanceof MakeDamageObserver)
                 .forEach(o -> {
                     o.notifyGame(damage);
                 });
-         if(lifeCount < 0)
+        if (lifeCount < 0)
             lifeCount = 0;
         if (lifeCount == 0)
             observers.stream()
@@ -60,16 +60,16 @@ public abstract class Player {
                     .ifPresent(GameObserver::notifyGame);
     }
 
-    public boolean cuff(){
-        if(skipTurn){
+    public boolean cuff() {
+        if (skipTurn) {
             return false;
         }
         skipTurn = true;
         return true;
     }
 
-    public void addItem(Item item){
-        if(items.size() < itemsCapacity){
+    public void addItem(Item item) {
+        if (items.size() < itemsCapacity) {
             items.add(item);
         }
     }
@@ -77,27 +77,30 @@ public abstract class Player {
     public <I extends Item> ItemUseResult useItem(Class<I> itemClass, Game game) {
         Item firstItem = items.stream()
                 .filter(item -> item.getClass()
-                .equals(itemClass))
+                        .equals(itemClass))
                 .findFirst().orElse(null);
         ItemUseResult result = ItemUseResult.USE_ITEM_FAILED;
-        if(firstItem != null){
+        if (firstItem != null) {
             result = firstItem.useItem(game);
-            if(!(result == ItemUseResult.USE_ITEM_FAILED)){
+            if (!(result == ItemUseResult.USE_ITEM_FAILED)) {
                 items.remove(firstItem);
                 observers.stream()
                         .filter(o -> o instanceof UseItemObserver)
                         .findFirst()
-                        .ifPresent(o -> {o.notifyGame(firstItem.getCost());});
+                        .ifPresent(o -> {
+                            o.notifyGame(firstItem.getCost());
+                        });
             }
         }
 
         return result;
     }
 
-    public boolean scipTurn(){
+    public boolean scipTurn() {
         return skipTurn;
     }
-    public void addObserver(GameObserver observer){
+
+    public void addObserver(GameObserver observer) {
         observers.add(observer);
     }
 }

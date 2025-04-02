@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public class ScoreServiceJDBC implements ScoreService {
-//    private static final String CREATE = "CREATE TABLE IF NOT EXISTS score (game VARCHAR(64) NOT NULL, player VARCHAR(64) NOT NULL, points INTEGER NOT NULL, playedOn TIMESTAMP NOT NULL);";
+    //    private static final String CREATE = "CREATE TABLE IF NOT EXISTS score (game VARCHAR(64) NOT NULL, player VARCHAR(64) NOT NULL, points INTEGER NOT NULL, playedOn TIMESTAMP NOT NULL);";
     public static final String SELECT = "SELECT game, player, points, playedOn FROM score WHERE game = ? ORDER BY points DESC LIMIT 10";
     public static final String DELETE = "DELETE FROM score";
     public static final String INSERT = "INSERT INTO score (game, player, points, playedOn) VALUES (?, ?, ?, ?)";
