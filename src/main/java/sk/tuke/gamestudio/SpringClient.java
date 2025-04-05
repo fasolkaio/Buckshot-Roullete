@@ -12,6 +12,9 @@ import sk.tuke.gamestudio.service.CommentService;
 import sk.tuke.gamestudio.service.JDBC.CommentServiceJDBC;
 import sk.tuke.gamestudio.service.JDBC.RatingServiceJDBC;
 import sk.tuke.gamestudio.service.JDBC.ScoreServiceJDBC;
+import sk.tuke.gamestudio.service.JPA.CommentServiceJPA;
+import sk.tuke.gamestudio.service.JPA.RatingServiceJPA;
+import sk.tuke.gamestudio.service.JPA.ScoreServiceJPA;
 import sk.tuke.gamestudio.service.RatingService;
 import sk.tuke.gamestudio.service.ScoreService;
 
@@ -47,17 +50,20 @@ public class SpringClient {
 
     @Bean
     public ScoreService scoreService(DataSource dataSource) {
-        return new ScoreServiceJDBC(dataSource);
+//        return new ScoreServiceJDBC(dataSource);
+        return new ScoreServiceJPA();
     }
 
     @Bean
     public RatingService ratingService(DataSource dataSource) {
-        return new RatingServiceJDBC(dataSource);
+//        return new RatingServiceJDBC(dataSource);
+        return new RatingServiceJPA();
     }
 
     @Bean
     public CommentService commentService(DataSource dataSource) {
-        return new CommentServiceJDBC(dataSource);
+//        return new CommentServiceJDBC(dataSource);
+        return new CommentServiceJPA();
     }
 
 }

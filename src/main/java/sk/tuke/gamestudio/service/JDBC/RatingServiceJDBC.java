@@ -35,7 +35,7 @@ public class RatingServiceJDBC implements RatingService {
             updateStatement.setTimestamp(4, new Timestamp(rating.getRatedOn().getTime()));
             updateStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RatingException("Problem selecting score", e);
+            throw new RatingException("Problem setting score", e);
         }
     }
 
