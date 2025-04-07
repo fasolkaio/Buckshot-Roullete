@@ -1,7 +1,6 @@
 package sk.tuke.gamestudio.game.buckshot_roulette.ui.console;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.Game;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.GameMode;
 import sk.tuke.gamestudio.game.buckshot_roulette.ui.GameUI;
@@ -11,9 +10,6 @@ import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.game.buckshot_roulette.ui.MenuUI;
 import sk.tuke.gamestudio.service.*;
-import sk.tuke.gamestudio.service.JDBC.CommentServiceJDBC;
-import sk.tuke.gamestudio.service.JDBC.RatingServiceJDBC;
-import sk.tuke.gamestudio.service.JDBC.ScoreServiceJDBC;
 
 import java.util.Date;
 import java.util.List;

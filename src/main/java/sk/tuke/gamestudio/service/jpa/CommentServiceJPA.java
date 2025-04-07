@@ -1,4 +1,4 @@
-package sk.tuke.gamestudio.service.JPA;
+package sk.tuke.gamestudio.service.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

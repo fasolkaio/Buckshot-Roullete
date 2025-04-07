@@ -1,4 +1,4 @@
-package sk.tuke.gamestudio.service.JDBC;
+package sk.tuke.gamestudio.service.jdbc;
 
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.service.ScoreException;

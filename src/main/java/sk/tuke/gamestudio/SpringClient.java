@@ -9,12 +9,11 @@ import sk.tuke.gamestudio.game.buckshot_roulette.ui.MenuUI;
 import sk.tuke.gamestudio.game.buckshot_roulette.ui.console.ConsoleGameUI;
 import sk.tuke.gamestudio.game.buckshot_roulette.ui.console.ConsoleMenuUI;
 import sk.tuke.gamestudio.service.CommentService;
-import sk.tuke.gamestudio.service.JDBC.CommentServiceJDBC;
-import sk.tuke.gamestudio.service.JDBC.RatingServiceJDBC;
-import sk.tuke.gamestudio.service.JDBC.ScoreServiceJDBC;
-import sk.tuke.gamestudio.service.JPA.CommentServiceJPA;
-import sk.tuke.gamestudio.service.JPA.RatingServiceJPA;
-import sk.tuke.gamestudio.service.JPA.ScoreServiceJPA;
+import sk.tuke.gamestudio.service.jpa.RatingServiceJPA;
+import sk.tuke.gamestudio.service.jpa.ScoreServiceJPA;
+import sk.tuke.gamestudio.service.jpaRepository.CommentServiceJpaRepository;
+import sk.tuke.gamestudio.service.jpaRepository.RatingServiceJpaRepository;
+import sk.tuke.gamestudio.service.jpaRepository.ScoreServiceJpaRepository;
 import sk.tuke.gamestudio.service.RatingService;
 import sk.tuke.gamestudio.service.ScoreService;
 
@@ -28,7 +27,7 @@ public class SpringClient {
         SpringApplication.run(SpringClient.class);
     }
 
-    @Bean
+    //@Bean
     public CommandLineRunner runner(MenuUI menuUI) {
         return s -> menuUI.run();
     }
@@ -51,19 +50,22 @@ public class SpringClient {
     @Bean
     public ScoreService scoreService(DataSource dataSource) {
 //        return new ScoreServiceJDBC(dataSource);
-        return new ScoreServiceJPA();
+//        return new ScoreServiceJPA();
+        return new ScoreServiceJpaRepository();
     }
 
     @Bean
     public RatingService ratingService(DataSource dataSource) {
 //        return new RatingServiceJDBC(dataSource);
-        return new RatingServiceJPA();
+//        return new RatingServiceJPA();
+        return new RatingServiceJpaRepository();
     }
 
     @Bean
     public CommentService commentService(DataSource dataSource) {
 //        return new CommentServiceJDBC(dataSource);
-        return new CommentServiceJPA();
+//        return new CommentServiceJPA();
+        return new CommentServiceJpaRepository();
     }
 
 }
