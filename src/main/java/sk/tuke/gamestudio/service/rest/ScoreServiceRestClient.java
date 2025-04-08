@@ -8,6 +8,7 @@ import sk.tuke.gamestudio.service.ScoreService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class ScoreServiceRestClient implements ScoreService {
     @Value("${remote.server.api}")
@@ -23,7 +24,7 @@ public class ScoreServiceRestClient implements ScoreService {
 
     @Override
     public List<Score> getTopScores(String game) {
-        return Arrays.asList(restTemplate.getForEntity(url + "/score/" + game, Score[].class).getBody());
+        return Arrays.asList(Objects.requireNonNull(restTemplate.getForEntity(url + "/score/" + game, Score[].class).getBody()));
     }
 
     @Override

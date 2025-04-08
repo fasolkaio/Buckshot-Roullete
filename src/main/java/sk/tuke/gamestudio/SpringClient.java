@@ -1,7 +1,6 @@
 package sk.tuke.gamestudio;
 
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -14,11 +13,6 @@ import sk.tuke.gamestudio.game.buckshot_roulette.ui.MenuUI;
 import sk.tuke.gamestudio.game.buckshot_roulette.ui.console.ConsoleGameUI;
 import sk.tuke.gamestudio.game.buckshot_roulette.ui.console.ConsoleMenuUI;
 import sk.tuke.gamestudio.service.CommentService;
-import sk.tuke.gamestudio.service.jpa.RatingServiceJPA;
-import sk.tuke.gamestudio.service.jpa.ScoreServiceJPA;
-import sk.tuke.gamestudio.service.jpaRepository.CommentServiceJpaRepository;
-import sk.tuke.gamestudio.service.jpaRepository.RatingServiceJpaRepository;
-import sk.tuke.gamestudio.service.jpaRepository.ScoreServiceJpaRepository;
 import sk.tuke.gamestudio.service.RatingService;
 import sk.tuke.gamestudio.service.ScoreService;
 import sk.tuke.gamestudio.service.rest.CommentServiceRestClient;

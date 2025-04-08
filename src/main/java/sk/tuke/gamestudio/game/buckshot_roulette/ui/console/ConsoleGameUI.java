@@ -1,7 +1,6 @@
 package sk.tuke.gamestudio.game.buckshot_roulette.ui.console;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.Game;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.GameState;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.actions.Action;

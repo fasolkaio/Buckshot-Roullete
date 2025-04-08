@@ -9,6 +9,7 @@ import sk.tuke.gamestudio.service.CommentService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class CommentServiceRestClient implements CommentService {
     @Value("${remote.server.api}")
@@ -25,7 +26,7 @@ public class CommentServiceRestClient implements CommentService {
 
     @Override
     public List<Comment> getComments(String game) throws CommentException {
-        return Arrays.asList(restTemplate.getForEntity(url + "/comment/" + game, Comment[].class).getBody());
+        return Arrays.asList(Objects.requireNonNull(restTemplate.getForEntity(url + "/comment/" + game, Comment[].class).getBody()));
 
     }
 
