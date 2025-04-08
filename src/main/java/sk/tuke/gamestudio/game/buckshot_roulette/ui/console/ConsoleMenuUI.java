@@ -23,7 +23,7 @@ import static sk.tuke.gamestudio.game.buckshot_roulette.core.GameMode.Testing;
 public class ConsoleMenuUI implements MenuUI {
     private final static int PAGE_CAPACITY = 5;
     private MenuState menuState = MenuState.DEFAULT;
-    private final String gameName = "buckshot roulette";
+    private final String gameName = "buckshot-roulette";
     private int commentPage = 0;
 
     //input|output utilities
@@ -160,7 +160,7 @@ public class ConsoleMenuUI implements MenuUI {
     }
 
     private void showTopScores() {
-        List<Score> topScores = scoreService.getTopScores("buckshot roulette");
+        List<Score> topScores = scoreService.getTopScores(gameName);
         gui.displayTopScores(topScores);
     }
 

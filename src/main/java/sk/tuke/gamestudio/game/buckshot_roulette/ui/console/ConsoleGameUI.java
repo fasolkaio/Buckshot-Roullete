@@ -170,10 +170,10 @@ public class ConsoleGameUI implements GameUI {
         if (game.singleMod()) {
             gui.displayInfoMessage("Your total score is: " + game.getScore());
             Player player = game.getHumanPlayer();
-            List<Score> topScores = scoreService.getTopScores("buckshot roulette");
+            List<Score> topScores = scoreService.getTopScores("buckshot-roulette");
 
             if (player.getLifeCount() != 0) {
-                scoreService.addScore(new Score("buckshot roulette", player.getName(), game.getScore(), new Date()));
+                scoreService.addScore(new Score("buckshot-roulette", player.getName(), game.getScore(), new Date()));
                 if (!topScores.isEmpty()) {
                     int lastScore = topScores.get(topScores.size() - 1).getPoints();
                     if (game.getScore() > lastScore)
@@ -183,7 +183,7 @@ public class ConsoleGameUI implements GameUI {
                 }
             }
 
-            topScores = scoreService.getTopScores("buckshot roulette");
+            topScores = scoreService.getTopScores("buckshot-roulette");
             gui.displayTopScores(topScores);
         }
     }
