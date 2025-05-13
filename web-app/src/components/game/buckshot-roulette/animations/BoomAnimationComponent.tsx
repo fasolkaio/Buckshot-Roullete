@@ -12,6 +12,8 @@ function BoomAnimationComponent({shootIn}: BoomAnimationComponentProp) {
             shootIn == ShootIn.DEALER ? 'dealer' :
                 'none';
 
+    console.log('animation rendered')
+
     return <>
         {
             shootIn == ShootIn.DEALER ? (

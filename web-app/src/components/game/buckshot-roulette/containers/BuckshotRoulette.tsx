@@ -90,13 +90,13 @@ function BuckshotRoulette({player, changeMenuState}: GameProps) {
                     if (useAction.usedBy == "Dealer") {
                         triggerOpponentUseAnimation(useAction);
                         await new Promise(resolve => setTimeout(resolve, 2000));
-                    } else {
-                        if (useAction.item.toLowerCase() == 'magnifyingglass'
-                            || useAction.item.toLowerCase() == 'beer') {
-                            setUsedMessage([useAction.item, useAction.result]);
-                            await new Promise(resolve => setTimeout(resolve, 2000));
-                            setUsedMessage([]);
-                        }
+                    }
+                    if ((useAction.item.toLowerCase() == 'magnifyingglass' && useAction.usedBy == player)
+                        || useAction.item.toLowerCase() == 'beer') {
+                        setUsedMessage([useAction.item, useAction.result]);
+                        console.log(useMessage)
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        setUsedMessage([]);
                     }
                 } else if (response.action.type === "RELOAD") {
                     const reloadAction = response.action as ReloadActionResult;
@@ -110,7 +110,8 @@ function BuckshotRoulette({player, changeMenuState}: GameProps) {
         } catch (error) {
             console.log(error);
         } finally {
-            if (gameState !== 'ROUND_ENDED') {
+            const lastGameState = updatesList[updatesList.length - 1]?.game.state;
+            if (lastGameState !== 'ROUND_ENDED') {
                 setBlocked(false);
             }
         }
@@ -145,10 +146,13 @@ function BuckshotRoulette({player, changeMenuState}: GameProps) {
         }
 
         if (action.success) {
+            const shootTarget = action.selfShoot === (action.shooterName === 'Dealer') ? ShootIn.DEALER : ShootIn.PLAYER;
             setTimeout(() => {
-                setShootIn(action.selfShoot === (action.shooterName === 'Dealer') ? ShootIn.DEALER : ShootIn.PLAYER);
-            }, 1200);
-            setTimeout(() => setShootIn(ShootIn.NONE), 2000);
+                setShootIn(shootTarget);
+                setTimeout(() => {
+                    setShootIn(ShootIn.NONE);
+                }, 1000);
+            }, 1000);
         }
     };
 
@@ -157,7 +161,7 @@ function BuckshotRoulette({player, changeMenuState}: GameProps) {
             setItemUsed(action.item);
             setTimeout(() => setItemUsed(''), 2000);
         } else {
-            console.log("FAILED ITEM USE");
+            console.log("Item use animation failed");
         }
     };
 
@@ -195,6 +199,7 @@ function BuckshotRoulette({player, changeMenuState}: GameProps) {
                                                restartGame={startGame}
                                                exitToMenu={() => changeMenuState(MenuState.MENU)}
                                                score={currentGameField.score}
+                                               playerName={player}
                                                playerWin={currentGameField.player.lifeCount > 0}/>}
                     </div>}
                 </>

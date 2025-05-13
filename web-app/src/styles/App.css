@@ -1,12 +1,16 @@
 #root {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+
   min-height: 100vh;
   width: 100vw;
   max-width: 1920px;
   place-items: center;
   text-align: center;
   padding: 0;
+
 }
 
 .read-the-docs {

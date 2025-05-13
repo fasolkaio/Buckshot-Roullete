@@ -1,15 +1,22 @@
 import {useState} from "react";
+import {addScore} from "../../../../api/score.service.ts";
 
 interface EndGameMessageProps{
     playerWin : boolean;
+    playerName : string;
     score : number;
     exitToMenu : ()=>void;
     restartGame : () =>void;
     continueGame : ()=>void;
 }
 
-function EndGameMessageBar({playerWin, score, exitToMenu, restartGame, continueGame}:EndGameMessageProps){
+function EndGameMessageBar({playerWin, playerName, score, exitToMenu, restartGame, continueGame}:EndGameMessageProps){
     const [endGame, setEndGame] = useState(false);
+
+    const writeScore = async() => {
+        if(playerName != 'GUEST')
+            await addScore('buckshot-roulette',playerName,score)
+    }
 
     return <div className={"end-message-container"}>
         {!endGame ?
@@ -38,6 +45,7 @@ function EndGameMessageBar({playerWin, score, exitToMenu, restartGame, continueG
                 <h2>{`Final score: ${score}`}</h2>
                 <div className={"end-buttons-container"}>
                     <button onClick={()=> {
+                        writeScore();
                         exitToMenu();
                     }} className={"end-button"}>Exit</button>
                     <button onClick={()=> {

@@ -1,5 +1,7 @@
 import './styles/App.css'
+import './styles/services.css'
 import MenuBuckshotRoulette from "./components/game/buckshot-roulette/containers/MenuBuckshotRoulette.tsx";
+import TopScore from "./components/services/TopScore.tsx";
 
 function App() {
     const loggedPlayer = 'lina';
@@ -7,7 +9,7 @@ function App() {
     <>
         <MenuBuckshotRoulette player={loggedPlayer}/>
         <div>
-            <h1>Services</h1>
+            <TopScore game={'buckshot-roulette'} player={loggedPlayer}/>
         </div>
     </>
     )
