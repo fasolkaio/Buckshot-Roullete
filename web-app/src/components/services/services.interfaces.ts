@@ -1,3 +1,8 @@
+export interface ServicesProps {
+    game: string;
+    player: string;
+}
+
 export interface Score{
     game:string,
     player:string,

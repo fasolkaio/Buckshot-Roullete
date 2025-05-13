@@ -1,13 +1,10 @@
 import {useEffect, useState} from "react";
-import {Score} from './services.interfaces.ts';
+import {Score, ServicesProps} from './services.interfaces.ts';
 import {getTopScores} from "../../api/score.service.ts";
 
-interface TopScoreProps {
-    game: string;
-    player: string;
-}
 
-function TopScore({game, player}: TopScoreProps) {
+
+function TopScore({game, player}: ServicesProps) {
     const [scores, setScores] = useState<Score[] | null>(null);
 
     useEffect(() => {
@@ -24,7 +21,7 @@ function TopScore({game, player}: TopScoreProps) {
 
     return (
         <div className="top-score-container">
-            <h1 className="top-score-title">Top Scores</h1>
+            <h1 className="title">Top Scores</h1>
             {scores ? (
                 <ul className="score-list">
                     {scores.map((score, index) => (
