@@ -1,0 +1,41 @@
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
+  max-width: 1920px;
+  place-items: center;
+  text-align: center;
+  padding: 0;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.centered-row-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.column-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.row-container{
+  display: flex;
+  flex-direction: row;
+}
+
+.non-clickable {
+  pointer-events: none;
+}
+.no-highlight {
+  user-select: none;
+}
+.color-inverter{
+  filter: invert(100%);
+}

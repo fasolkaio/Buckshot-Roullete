@@ -13,7 +13,7 @@ import java.util.List;
 public class ScoreServiceRestServer {
     private final ScoreService scoreService;
 
-    //GET -> http://localhost:8080/api/score/mines
+    //GET -> http://localhost:8080/api/score/buckshot-roulette
     @GetMapping("/{game}")
     public List<Score> getTopScores(@PathVariable String game) {
         return scoreService.getTopScores(game);

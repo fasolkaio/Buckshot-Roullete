@@ -15,17 +15,13 @@ import sk.tuke.gamestudio.game.buckshot_roulette.core.players.Human;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.players.Player;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.utilities.RandomGenerator;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.weapon.Gun;
-
+@Getter
 public class Game {
-    @Getter
     private Gun gun;
-    @Getter
     @Setter
     private GameState gameState = GameState.FIRST_PLAYER_TURN;
-    @Getter
     private int score = 8000;
 
-    @Getter
     private final GameMode gameMode;
 
     private Player firstPlayer;
@@ -112,6 +108,21 @@ public class Game {
     public ActionResult playTurn(Action action) {
         if (gun == null || gun.isEmpty())
             throw new UnsupportedOperationException("Game does not completed, reload gun to continue!");
+        if (!getActualPlayer().scipTurn())
+            return getActualPlayer().doTurn(action);
+        else {
+            getActualPlayer().setSkipTurn(false);
+            switchTurn();
+            return new SkipTurnActionResult(getNotActualPlayer());
+        }
+    }
+
+    public ActionResult playTurn(Action action, String playerName) {
+        if (gun == null || gun.isEmpty())
+            throw new UnsupportedOperationException("Game does not completed, reload gun to continue!");
+        if(!getActualPlayer().getName().equalsIgnoreCase(playerName)){
+            return null;
+        }
         if (!getActualPlayer().scipTurn())
             return getActualPlayer().doTurn(action);
         else {

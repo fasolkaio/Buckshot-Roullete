@@ -1,0 +1,67 @@
+.logo{
+    width: 60%;
+    height: 20%;
+    /*background-color: antiquewhite;*/
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo h1{
+    font-size: clamp(20px, 2em, 30px);
+}
+
+.menu-buttons-container{
+    width: 60%;
+
+    padding: 2%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+
+}
+
+.menu-buttons-container button{
+    transition: 0.3s ease;
+}
+
+.menu-buttons-container:hover > button:not(:hover) {
+    transform: scale(0.9);
+    filter: blur(2px);
+    opacity: 0.9;
+}
+
+.menu-buttons {
+    height: 40%;
+    width: 40%;
+    min-height: 30px;
+    font-size: clamp(17px, 2vw, 30px);
+
+    text-align: center;
+    background-color: rgba(36, 36, 36, 0);
+}
+
+.menu-buttons:hover {
+    background-color: rgba(35, 35, 35, 0.5);
+    border-color: rgba(255, 249, 239, 0.49);
+}
+
+.message {
+    position: absolute;
+    bottom: 2%;
+}
+
+.blinking-cursor {
+    display: inline-block;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+

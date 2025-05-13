@@ -7,7 +7,7 @@ Inspired by the original [Buckshot Roulette](https://store.steampowered.com/app/
 ## Technologies Used
 
 - **Backend**: Java 17, Spring Boot, Maven
-- **Frontend**: React (JavaScript or TypeScript)
+- **Frontend**: React (TypeScript)
 - **Database**: PostgreSQL
 - **Communication**: REST API
 - **Build Tools**: Maven, npm, Node.js
