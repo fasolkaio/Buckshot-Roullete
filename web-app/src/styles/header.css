@@ -1,0 +1,143 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: fixed;
+    top: 0;
+    left: -400px;
+    height: 100vh;
+    width: 15vw;
+    background-color: #578e7e;
+    border-right: 2px solid #f5ecd5;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    color: #f5ecd5;
+    transition: left 0.3s ease;
+    z-index: 200;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar-title {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #f5ecd5;
+    border-bottom: 2px solid #f5ecd5;;
+}
+
+.sidebar-item {
+    background-color: transparent;
+    border: 1px solid #578e7e;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #f5ecd5;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sidebar-item:hover {
+    background-color: #578e7e;
+    color: #fffaf0;
+}
+
+.close-btn {
+    align-self: flex-end;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #f5ecd5;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.header-container {
+    width: 96vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f5ecd5;
+    color: #3d3d3d;
+    padding: 1.5vw 2vw;
+    border-bottom: 2px solid #578e7e;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    align-content: flex-start;
+    gap: 12px;
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-icon:hover {
+    background-color: #3d3d3d;
+}
+
+.header-title {
+    font-size: clamp(10px, 1.5em, 36px);
+    font-weight: 600;
+    color: #578e7e;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-player {
+    font-size: 16px;
+    font-weight: 500;
+    color: #578e7e;
+}
+
+.header-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    width: 25vw;
+    height: 100%;
+}
+
+button {
+    width: 40%;
+    height: clamp(30px, 5vw, 50px) ;
+    min-width: 90px;
+
+    background-color: #578e7e;
+    color: #fffaf0;
+    font-size: clamp(12px, 0.5em ,16px);
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #3d3d3d;
+}
+
+button:disabled {
+    background-color: #f5ecd5;
+    color: #888;
+    cursor: not-allowed;
+}
