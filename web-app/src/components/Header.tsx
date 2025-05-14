@@ -17,7 +17,7 @@ function Header({ player, login, singIn }: HeaderProps) {
             <div className={`sidebar ${menuOpen ? "open" : ""}`}>
                 <button className="close-btn" onClick={toggleMenu}>×</button>
                 <h2 className="sidebar-title">Games</h2>
-                <button className="sidebar-item">Buckshot Roulette</button>
+                <button className="sidebar-item">Catshot Roulette</button>
             </div>
 
             <div className="header-container">
@@ -34,7 +34,7 @@ function Header({ player, login, singIn }: HeaderProps) {
                 <div className="header-controls">
                     {player != "GUEST" && <span className="header-player">{player}</span>}
                     <div className={"header-buttons"}>
-                        <button onClick={login}>Login</button>
+                        <button onClick={login}>Log In</button>
                         <button onClick={singIn}>Sign Up</button>
                     </div>
                 </div>

@@ -29,7 +29,7 @@ function MenuBuckshotRoulette({player}: BuckshotRouletteMenuProps) {
             {menuState === MenuState.MENU && (
                 <>
                     <div className="logo">
-                        <h1>Welcome to Buckshot Roulette game!</h1>
+                        <h1>Welcome to Catshot Roulette game!</h1>
                     </div>
 
                     <div className="menu-buttons-container">

@@ -2,8 +2,8 @@ package sk.tuke.gamestudio.server.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import sk.tuke.gamestudio.server.DTO.GameStateDTO;
-import sk.tuke.gamestudio.server.DTO.ReloadActionResultDTO;
+import sk.tuke.gamestudio.server.DTO.game.GameStateDTO;
+import sk.tuke.gamestudio.server.DTO.game.ReloadActionResultDTO;
 
 @Getter
 @AllArgsConstructor

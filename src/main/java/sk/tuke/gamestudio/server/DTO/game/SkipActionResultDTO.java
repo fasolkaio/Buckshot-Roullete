@@ -1,4 +1,4 @@
-package sk.tuke.gamestudio.server.DTO;
+package sk.tuke.gamestudio.server.DTO.game;
 
 public class SkipActionResultDTO extends ActionResultDTO {
     protected SkipActionResultDTO(ActionType actionType) {

@@ -1,12 +1,10 @@
-package sk.tuke.gamestudio.server.DTO;
+package sk.tuke.gamestudio.server.DTO.game;
 
 import sk.tuke.gamestudio.game.buckshot_roulette.core.Game;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.actions.*;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.items.*;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.weapon.Gun;
 import sk.tuke.gamestudio.server.responses.ResultResponse;
-
-import java.util.Objects;
 
 public class ActionFactory {
     public UseActionResultDTO convertToDTO(UseActionResult actionResult){

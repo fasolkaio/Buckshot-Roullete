@@ -1,4 +1,4 @@
-package sk.tuke.gamestudio.server.DTO;
+package sk.tuke.gamestudio.server.DTO.game;
 
 import lombok.Getter;
 import sk.tuke.gamestudio.game.buckshot_roulette.core.Game;
