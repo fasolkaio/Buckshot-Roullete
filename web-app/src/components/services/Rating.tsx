@@ -16,6 +16,14 @@ const Rating = ({ game, player }: ServicesProps) => {
                 } else {
                     setAverageRating(0);
                 }
+                if(player != 'GUEST'){
+                    const responseUserRating = await getRating(game, player);
+                    if (responseUserRating.data && typeof responseUserRating.data === 'number') {
+                        setUserRating(responseUserRating.data);
+                    } else {
+                        setUserRating(0);
+                    }
+                }
             } catch (error) {
                 console.error("Error fetching average rating", error);
             }
