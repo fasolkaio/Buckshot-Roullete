@@ -1,6 +1,6 @@
 .background-game-container{
     height: min(720px,56vw);
-    width: 94%;
+    width: 90%;
     max-height: 94vh;
     max-width: 1280px;
 
@@ -12,7 +12,7 @@
     background-repeat: no-repeat;
 
     padding: 0;
-    margin: 1vh;
+    margin-top: 5vh;
     border: 5px solid antiquewhite ;
     border-radius: 5px;
 
@@ -226,6 +226,7 @@
 .item-button {
     padding: 0.5%;
     aspect-ratio: 1 / 1;
+    width: 10%;
     min-height: max(30px, 100%);
     min-width: max(30px, 9.5%);
 
@@ -240,6 +241,11 @@
     cursor: pointer;
     background-color: transparent;
     box-sizing: border-box;
+}
+
+.item-button:hover{
+
+    background-color: rgba(61, 61, 61, 0);
 }
 
 .item-button img {

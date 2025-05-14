@@ -9,5 +9,5 @@ export const addComment = (game:string, player:string, comment:string) =>
         game:game,
         player:player,
         comment:comment,
-        ratedOn : formatDate(new Date())
+        commentedOn : formatDate(new Date())
     });

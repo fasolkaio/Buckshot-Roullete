@@ -14,5 +14,5 @@ export interface Comment{
     game:string,
     player:string,
     comment:string,
-    commentedOn:Date
+    commentedOn: string
 }

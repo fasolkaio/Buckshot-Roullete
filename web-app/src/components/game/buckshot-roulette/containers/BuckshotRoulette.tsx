@@ -63,7 +63,7 @@ function BuckshotRoulette({player, changeMenuState}: GameProps) {
 
     const startGame = async () => {
         try {
-            const response = await initGame(player);
+            const response = await initGame(player).then();
             setCurrentGameField(response.data.game);
             setSessionId(response.data.sessionId);
             setGameState(response.data.game.state);
@@ -83,8 +83,8 @@ function BuckshotRoulette({player, changeMenuState}: GameProps) {
 
                 if (response.action.type === "SHOOT") {
                     const shootAction = response.action as ShootActionResult;
-                    triggerShootAnimation(shootAction);
-                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    await triggerShootAnimation(shootAction);
+
                 } else if (response.action.type === "USE") {
                     const useAction = response.action as UseActionResult;
                     if (useAction.usedBy == "Dealer") {
@@ -132,7 +132,7 @@ function BuckshotRoulette({player, changeMenuState}: GameProps) {
         }
     };
 
-    const triggerShootAnimation = (action: ShootActionResult) => {
+    const triggerShootAnimation = async (action: ShootActionResult) => {
         if (opponentAnimation !== ShootAnimation.NONE || playerAnimation !== ShootAnimation.NONE) {
             return;
         }
@@ -147,14 +147,21 @@ function BuckshotRoulette({player, changeMenuState}: GameProps) {
 
         if (action.success) {
             const shootTarget = action.selfShoot === (action.shooterName === 'Dealer') ? ShootIn.DEALER : ShootIn.PLAYER;
-            setTimeout(() => {
-                setShootIn(shootTarget);
+
+            await new Promise(resolve => {
                 setTimeout(() => {
-                    setShootIn(ShootIn.NONE);
+                    setShootIn(shootTarget);
+                    setTimeout(() => {
+                        setShootIn(ShootIn.NONE);
+                        resolve(null);
+                    }, 1000);
                 }, 1000);
-            }, 1000);
+            });
+        } else {
+            await new Promise(resolve => setTimeout(resolve, 2000));
         }
     };
+
 
     const triggerOpponentUseAnimation = (action: UseActionResult) => {
         if (action.result !== "USE_ITEM_FAILED") {
